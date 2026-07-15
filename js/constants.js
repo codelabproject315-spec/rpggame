@@ -5,9 +5,6 @@
 
 export const TILE_SIZE = 32;
 
-export const VIEWPORT_WIDTH = 640;
-export const VIEWPORT_HEIGHT = 480;
-
 // プレイヤーの移動速度 (px / 秒)
 export const PLAYER_SPEED = 180;
 
