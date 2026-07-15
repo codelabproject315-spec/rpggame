@@ -395,7 +395,7 @@ export class Renderer {
   constructor(container) {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('#bfe3f2');
-    this.scene.fog = new THREE.Fog('#bfe3f2', TILE_SIZE * 11, TILE_SIZE * 26);
+    this.scene.fog = new THREE.Fog('#bfe3f2', TILE_SIZE * 20, TILE_SIZE * 46);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
