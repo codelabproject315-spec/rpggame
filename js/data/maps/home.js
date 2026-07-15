@@ -65,6 +65,9 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 23, y: 20 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 7, y: 20 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 12, y: 26 });
+  placeObject(tiles, objects, { type: ObjectType.PLANTER, x: 21, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.PLANTER, x: 25, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.LAUNDRY_POLE, x: 35, y: 19 });
 
   // 家族NPC
   placeNpc(tiles, npcs, {
