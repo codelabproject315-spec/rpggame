@@ -27,10 +27,10 @@ export const Direction = {
 // ------------------------------------------------------------
 
 // カメラはプレイヤーの少し後ろ・上から見下ろす形で追従する
-export const CAMERA_HEIGHT = TILE_SIZE * 9;
-export const CAMERA_DISTANCE = TILE_SIZE * 7;
-export const CAMERA_FOV = 45;
-export const CAMERA_LOOK_AHEAD = TILE_SIZE * 1.5; // プレイヤーの少し先を見る
+export const CAMERA_HEIGHT = TILE_SIZE * 16;
+export const CAMERA_DISTANCE = TILE_SIZE * 13;
+export const CAMERA_FOV = 50;
+export const CAMERA_LOOK_AHEAD = TILE_SIZE * 2.5; // プレイヤーの少し先を見る
 
 // 各種オブジェクトのおおよその高さ（タイルサイズを基準にした比率）
 export const HEIGHTS = {
