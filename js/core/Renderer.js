@@ -10,6 +10,7 @@ import { TileType, TILE_DEFINITIONS } from '../data/tileTypes.js';
 import { BUILDING_DEFINITIONS } from '../data/buildingTypes.js';
 import { OBJECT_DEFINITIONS } from '../data/objectTypes.js';
 import { NPC_DEFINITIONS } from '../data/npcTypes.js';
+import { MAPS } from '../data/maps/index.js';
 import { TILE_SIZE, HEIGHTS, Direction } from '../constants.js';
 
 const GROUND_PX_PER_TILE = 16; // 地面テクスチャの解像度（タイル1枚あたりのピクセル数）
@@ -392,6 +393,30 @@ function buildExitDebugMesh(exit) {
   return mesh;
 }
 
+/** 出口の脇に立てる、行き先を示す道しるべ */
+function buildExitSignMesh(exit) {
+  const ts = TILE_SIZE;
+  const targetMap = MAPS[exit.target];
+  const targetName = targetMap ? targetMap.name : exit.target;
+  const group = new THREE.Group();
+
+  const post = new THREE.Mesh(
+    new THREE.CylinderGeometry(ts * 0.05, ts * 0.06, ts * 1.3, 8),
+    new THREE.MeshLambertMaterial({ color: '#8b5a2b' })
+  );
+  post.position.y = ts * 0.65;
+  group.add(post);
+
+  const label = makeLabelSprite(`→ ${targetName}`, 34);
+  label.position.y = ts * 1.45;
+  group.add(label);
+
+  const cx = exit.x + exit.w / 2;
+  const cy = exit.y + exit.h / 2;
+  group.position.set(cx * ts, 0, cy * ts);
+  return group;
+}
+
 function disposeObject3D(root) {
   root.traverse((child) => {
     if (child.geometry) child.geometry.dispose();
@@ -525,6 +550,8 @@ export class Renderer {
       const debugMesh = buildExitDebugMesh(exit);
       this.mapGroup.add(debugMesh);
       this.debugMeshes.push(debugMesh);
+
+      this.mapGroup.add(buildExitSignMesh(exit));
     }
   }
 
