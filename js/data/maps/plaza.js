@@ -20,6 +20,23 @@ function build() {
   // 中央の広場スペース（道を太くする）
   fillRect(tiles, 11, 7, 9, 7, TileType.ROAD);
 
+  // 四隅の小さな庭園（生垣で囲む）
+  fillRect(tiles, 3, 2, 5, 4, TileType.FOREST);
+  fillRect(tiles, 4, 3, 3, 2, TileType.FLOWER);
+  fillRect(tiles, 5, 5, 1, 1, TileType.GRASS);
+
+  fillRect(tiles, 22, 2, 5, 4, TileType.FOREST);
+  fillRect(tiles, 23, 3, 3, 2, TileType.FLOWER);
+  fillRect(tiles, 24, 5, 1, 1, TileType.GRASS);
+
+  fillRect(tiles, 3, 14, 5, 4, TileType.FOREST);
+  fillRect(tiles, 4, 15, 3, 2, TileType.FLOWER);
+  fillRect(tiles, 5, 14, 1, 1, TileType.GRASS);
+
+  fillRect(tiles, 22, 14, 5, 4, TileType.FOREST);
+  fillRect(tiles, 23, 15, 3, 2, TileType.FLOWER);
+  fillRect(tiles, 24, 14, 1, 1, TileType.GRASS);
+
   // 広場の設置物（4隅の街灯 + 掲示板 + ベンチ + 花壇）
   placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 15, y: 8 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 12, y: 8 });
@@ -30,11 +47,19 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 17, y: 10 });
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 15, y: 12 });
   placeObject(tiles, objects, { type: ObjectType.MAILBOX, x: 20, y: 10 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 8, y: 4 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 21, y: 4 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 8, y: 15 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 21, y: 15 });
 
   // 広場は人の行き交うハブなのでNPCを多めに配置
   placeNpc(tiles, npcs, { id: 'plaza_npc_01', type: NpcType.STUDENT, x: 13, y: 9, name: '下校中の生徒', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_02', type: NpcType.CUSTOMER, x: 17, y: 9, name: '買い物帰りの住人', facing: 'left' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_03', type: NpcType.VILLAGER, x: 15, y: 13, name: '散歩中の住人', facing: 'up' });
+  placeNpc(tiles, npcs, { id: 'plaza_npc_04', type: NpcType.VILLAGER, x: 5, y: 4, name: '庭でくつろぐ住人', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'plaza_npc_05', type: NpcType.STUDENT, x: 24, y: 4, name: '庭でくつろぐ生徒', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'plaza_npc_06', type: NpcType.CUSTOMER, x: 5, y: 16, name: '庭でくつろぐ住人', facing: 'up' });
+  placeNpc(tiles, npcs, { id: 'plaza_npc_07', type: NpcType.VILLAGER, x: 24, y: 16, name: '庭でくつろぐ住人', facing: 'up' });
 
   defineExit(exits, {
     x: 14, y: 0, w: 3, h: 2,
