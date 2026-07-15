@@ -59,6 +59,11 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 35, y: 20 });
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 26, y: 20 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 22, y: 6 });
+  placeObject(tiles, objects, { type: ObjectType.CAFE_TABLE, x: 24, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.CAFE_TABLE, x: 24, y: 15 });
+  placeObject(tiles, objects, { type: ObjectType.LANTERN, x: 25, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.LANTERN, x: 25, y: 16 });
+  placeObject(tiles, objects, { type: ObjectType.SHOP_BANNER, x: 26, y: 11 });
 
   placeNpc(tiles, npcs, { id: 'shopping_owner_01', type: NpcType.SHOPKEEPER, x: 29, y: 13, name: '店主', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'shopping_customer_01', type: NpcType.CUSTOMER, x: 12, y: 12, name: '買い物客', facing: 'right' });
