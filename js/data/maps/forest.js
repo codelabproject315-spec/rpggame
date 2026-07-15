@@ -53,6 +53,11 @@ function build() {
   // 森の奥に隠された宝箱
   placeObject(tiles, objects, { type: ObjectType.TREASURE_CHEST, x: 36, y: 15 });
 
+  // 道中のお地蔵様と道しるべ、そして古い井戸（中には入れない）
+  placeObject(tiles, objects, { type: ObjectType.JIZO_STATUE, x: 4, y: 15 });
+  placeObject(tiles, objects, { type: ObjectType.TRAIL_SIGN, x: 20, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.WELL, x: 13, y: 15 });
+
   // 森の奥に佇む謎の人影
   placeNpc(tiles, npcs, { id: 'forest_mystery_01', type: NpcType.MYSTERY, x: 33, y: 9, name: '謎の人影', facing: 'down' });
   // 木漏れ日の広場で迷っている旅人
