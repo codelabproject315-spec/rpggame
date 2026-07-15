@@ -434,6 +434,16 @@ export class Renderer {
     this.debugMeshes = [];
 
     this._buildPlayerMesh();
+    this._buildInteractIndicator();
+  }
+
+  _buildInteractIndicator() {
+    const geo = new THREE.OctahedronGeometry(TILE_SIZE * 0.14, 0);
+    const mat = new THREE.MeshStandardMaterial({ color: '#ffe066', emissive: '#ffe066', emissiveIntensity: 0.7 });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.visible = false;
+    this.scene.add(mesh);
+    this.interactIndicator = mesh;
   }
 
   /** ウィンドウサイズが変わったときに描画サイズを更新する */
@@ -532,7 +542,24 @@ export class Renderer {
 
     for (const mesh of this.debugMeshes) mesh.visible = !!options.debug;
 
+    this._updateInteractIndicator(options.interactTarget);
+
     camera.follow(player.x, player.y);
     this.renderer.render(this.scene, camera.threeCamera);
+  }
+
+  _updateInteractIndicator(target) {
+    if (!target) {
+      this.interactIndicator.visible = false;
+      return;
+    }
+    const ts = TILE_SIZE;
+    const wx = target.entity.x * ts + ts / 2;
+    const wz = target.entity.y * ts + ts / 2;
+    const baseHeight = target.kind === 'npc' ? HEIGHTS.NPC + ts * 0.5 : ts * 0.9;
+    const bob = Math.sin(performance.now() / 250) * ts * 0.06;
+    this.interactIndicator.position.set(wx, baseHeight + bob, wz);
+    this.interactIndicator.rotation.y += 0.06;
+    this.interactIndicator.visible = true;
   }
 }
