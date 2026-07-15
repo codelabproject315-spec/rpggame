@@ -99,6 +99,24 @@ function buildGroundMesh(mapData) {
   return mesh;
 }
 
+/**
+ * マップの外側を覆う背景用の地面。
+ * ズームアウトしてもマップの端の外側に何もない空間（背景色）が
+ * 見えてしまわないよう、実際のマップより十分広い単色の地面を
+ * 少しだけ低い位置に敷いておく（本来のマップの地面がその上に重なる）。
+ */
+function buildSurroundingGround(mapData) {
+  const width = mapData.width * TILE_SIZE;
+  const depth = mapData.height * TILE_SIZE;
+  const size = Math.max(width, depth) + TILE_SIZE * 120;
+  const geometry = new THREE.PlaneGeometry(size, size);
+  const material = new THREE.MeshLambertMaterial({ color: '#6fae4e' });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.set(width / 2, -0.5, depth / 2);
+  return mesh;
+}
+
 function collectTilePositions(mapData, tileId) {
   const positions = [];
   for (let row = 0; row < mapData.height; row++) {
@@ -450,6 +468,7 @@ export class Renderer {
     this.npcAnimEntries = [];
     this.debugMeshes = [];
 
+    this.mapGroup.add(buildSurroundingGround(mapData));
     this.mapGroup.add(buildGroundMesh(mapData));
 
     const clusterBuilders = [
