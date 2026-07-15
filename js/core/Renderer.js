@@ -14,6 +14,10 @@ import { TILE_SIZE, HEIGHTS, Direction } from '../constants.js';
 
 const GROUND_PX_PER_TILE = 16; // 地面テクスチャの解像度（タイル1枚あたりのピクセル数）
 
+const ORIGINAL_OBJECT_SHAPES = new Set([
+  'signboard', 'bench', 'streetlight', 'mailbox', 'vendingMachine', 'treasureChest', 'flowerBed',
+]);
+
 const FACING_OFFSETS = {
   [Direction.DOWN]: [0, 1],
   [Direction.UP]: [0, -1],
@@ -326,16 +330,274 @@ function buildObjectMesh(obj) {
       }
       break;
     }
-    default: {
-      const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.4, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
-      box.position.y = ts * 0.2;
-      group.add(box);
-    }
+    default:
+      break;
+  }
+
+  if (!ORIGINAL_OBJECT_SHAPES.has(def.shape)) {
+    buildExtraObjectShape(def.shape, group, color, ts);
   }
 
   group.position.set(obj.x * ts + ts / 2, 0, obj.y * ts + ts / 2);
   return group;
 }
+
+/** 今回追加した新オブジェクトの形状。既存のswitchを肥大化させないよう別関数に分離。 */
+function buildExtraObjectShape(shape, group, color, ts) {
+  switch (shape) {
+    case 'torii': {
+      const postMat = new THREE.MeshLambertMaterial({ color });
+      const postGeo = new THREE.CylinderGeometry(ts * 0.06, ts * 0.07, ts * 1.1, 8);
+      const post1 = new THREE.Mesh(postGeo, postMat);
+      post1.position.set(-ts * 0.32, ts * 0.55, 0);
+      const post2 = new THREE.Mesh(postGeo, postMat);
+      post2.position.set(ts * 0.32, ts * 0.55, 0);
+      const topBeam = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.9, ts * 0.1, ts * 0.12), postMat);
+      topBeam.position.y = ts * 1.05;
+      const subBeam = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.74, ts * 0.07, ts * 0.09), postMat);
+      subBeam.position.y = ts * 0.9;
+      group.add(post1, post2, topBeam, subBeam);
+      break;
+    }
+    case 'komainu': {
+      const stoneMat = new THREE.MeshLambertMaterial({ color, flatShading: true });
+      const body = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.22, 8, 8), stoneMat);
+      body.position.y = ts * 0.25;
+      body.scale.set(1, 0.85, 1.3);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.15, 8, 8), stoneMat);
+      head.position.set(0, ts * 0.45, ts * 0.12);
+      const earGeo = new THREE.ConeGeometry(ts * 0.05, ts * 0.1, 6);
+      const ear1 = new THREE.Mesh(earGeo, stoneMat);
+      ear1.position.set(-ts * 0.08, ts * 0.56, ts * 0.12);
+      const ear2 = new THREE.Mesh(earGeo, stoneMat);
+      ear2.position.set(ts * 0.08, ts * 0.56, ts * 0.12);
+      group.add(body, head, ear1, ear2);
+      break;
+    }
+    case 'bell': {
+      const frameMat = new THREE.MeshLambertMaterial({ color: '#6b4a2f' });
+      const postGeo = new THREE.BoxGeometry(ts * 0.07, ts * 0.9, ts * 0.07);
+      const post1 = new THREE.Mesh(postGeo, frameMat);
+      post1.position.set(-ts * 0.3, ts * 0.45, 0);
+      const post2 = new THREE.Mesh(postGeo, frameMat);
+      post2.position.set(ts * 0.3, ts * 0.45, 0);
+      const beam = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.7, ts * 0.08, ts * 0.08), frameMat);
+      beam.position.y = ts * 0.85;
+      const bellShape = new THREE.Mesh(
+        new THREE.CylinderGeometry(ts * 0.12, ts * 0.2, ts * 0.35, 10),
+        new THREE.MeshStandardMaterial({ color, metalness: 0.3, roughness: 0.6 })
+      );
+      bellShape.position.y = ts * 0.55;
+      group.add(post1, post2, beam, bellShape);
+      break;
+    }
+
+    case 'swing': {
+      const frameMat = new THREE.MeshLambertMaterial({ color });
+      const legGeo = new THREE.BoxGeometry(ts * 0.06, ts * 0.9, ts * 0.06);
+      for (const ox of [-0.35, 0.35]) {
+        for (const oz of [-0.3, 0.3]) {
+          const leg = new THREE.Mesh(legGeo, frameMat);
+          leg.position.set(ox * ts, ts * 0.45, oz * ts);
+          group.add(leg);
+        }
+      }
+      const topBar = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.8, ts * 0.06, ts * 0.06), frameMat);
+      topBar.position.y = ts * 0.9;
+      group.add(topBar);
+      const seatMat = new THREE.MeshLambertMaterial({ color: '#8b5a2b' });
+      for (const ox of [-0.2, 0.2]) {
+        const rope1 = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.015, ts * 0.015, ts * 0.4, 4), frameMat);
+        rope1.position.set(ox * ts, ts * 0.68, 0);
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.22, ts * 0.03, ts * 0.12), seatMat);
+        seat.position.set(ox * ts, ts * 0.47, 0);
+        group.add(rope1, seat);
+      }
+      break;
+    }
+    case 'slide': {
+      const rampMat = new THREE.MeshLambertMaterial({ color });
+      const ramp = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.06, ts * 0.9), rampMat);
+      ramp.rotation.x = -Math.PI / 5;
+      ramp.position.set(0, ts * 0.35, ts * 0.05);
+      const ladderMat = new THREE.MeshLambertMaterial({ color: '#8a8a8a' });
+      const ladder = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.35, ts * 0.75, ts * 0.06), ladderMat);
+      ladder.position.set(0, ts * 0.38, -ts * 0.4);
+      group.add(ramp, ladder);
+      break;
+    }
+    case 'fountain': {
+      const basinMat = new THREE.MeshLambertMaterial({ color });
+      const basin = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.42, ts * 0.46, ts * 0.22, 14), basinMat);
+      basin.position.y = ts * 0.11;
+      const waterMat = new THREE.MeshStandardMaterial({ color: '#5fb6d9', transparent: true, opacity: 0.85 });
+      const water = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.36, ts * 0.36, ts * 0.05, 14), waterMat);
+      water.position.y = ts * 0.24;
+      const spout = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.06, ts * 0.08, ts * 0.35, 8), basinMat);
+      spout.position.y = ts * 0.35;
+      group.add(basin, water, spout);
+      break;
+    }
+
+    case 'bicycleRack': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.9, ts * 0.05, ts * 0.06), mat);
+      rail.position.y = ts * 0.3;
+      group.add(rail);
+      for (const ox of [-0.32, 0, 0.32]) {
+        const loop = new THREE.Mesh(new THREE.TorusGeometry(ts * 0.13, ts * 0.02, 6, 12), mat);
+        loop.position.set(ox * ts, ts * 0.3, 0);
+        group.add(loop);
+      }
+      break;
+    }
+    case 'clockTower': {
+      const bodyMat = new THREE.MeshLambertMaterial({ color });
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 1.6, ts * 0.4), bodyMat);
+      tower.position.y = ts * 0.8;
+      const clockMat = new THREE.MeshStandardMaterial({ color: '#f2ead9', emissive: '#f2ead9', emissiveIntensity: 0.15 });
+      const clockFace = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.16, ts * 0.16, ts * 0.03, 16), clockMat);
+      clockFace.rotation.x = Math.PI / 2;
+      clockFace.position.set(0, ts * 1.4, ts * 0.21);
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.32, ts * 0.3, 4), new THREE.MeshLambertMaterial({ color: '#5b7fbd' }));
+      roof.rotation.y = Math.PI / 4;
+      roof.position.y = ts * 1.75;
+      group.add(tower, clockFace, roof);
+      break;
+    }
+
+    case 'cafeTable': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const top = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.24, ts * 0.24, ts * 0.04, 12), mat);
+      top.position.y = ts * 0.4;
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, ts * 0.4, 8), mat);
+      leg.position.y = ts * 0.2;
+      const parasol = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.32, ts * 0.18, 10), new THREE.MeshLambertMaterial({ color: '#c0392b' }));
+      parasol.position.y = ts * 0.72;
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.015, ts * 0.015, ts * 0.35, 6), mat);
+      pole.position.y = ts * 0.55;
+      group.add(top, leg, parasol, pole);
+      break;
+    }
+    case 'lantern': {
+      const frameMat = new THREE.MeshLambertMaterial({ color: '#6b4a2f' });
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.3, ts * 0.04, ts * 0.04), frameMat);
+      bar.position.y = ts * 0.85;
+      const lampMat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.5 });
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.14, 10, 10), lampMat);
+      lamp.position.y = ts * 0.68;
+      group.add(bar, lamp);
+      break;
+    }
+    case 'shopBanner': {
+      const poleMat = new THREE.MeshLambertMaterial({ color: '#6b4a2f' });
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.02, ts * 0.02, ts * 0.85, 6), poleMat);
+      pole.position.y = ts * 0.65;
+      const banner = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.05, ts * 0.5, ts * 0.36), new THREE.MeshLambertMaterial({ color }));
+      banner.position.set(ts * 0.2, ts * 0.5, 0);
+      group.add(pole, banner);
+      break;
+    }
+
+    case 'well': {
+      const stoneMat = new THREE.MeshLambertMaterial({ color });
+      const rim = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.28, ts * 0.3, ts * 0.35, 12), stoneMat);
+      rim.position.y = ts * 0.18;
+      const roofPostMat = new THREE.MeshLambertMaterial({ color: '#8b5a2b' });
+      const postGeo = new THREE.BoxGeometry(ts * 0.05, ts * 0.5, ts * 0.05);
+      const post1 = new THREE.Mesh(postGeo, roofPostMat);
+      post1.position.set(-ts * 0.22, ts * 0.5, 0);
+      const post2 = new THREE.Mesh(postGeo, roofPostMat);
+      post2.position.set(ts * 0.22, ts * 0.5, 0);
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.35, ts * 0.2, 4), new THREE.MeshLambertMaterial({ color: '#8f2d2d' }));
+      roof.rotation.y = Math.PI / 4;
+      roof.position.y = ts * 0.85;
+      group.add(rim, post1, post2, roof);
+      break;
+    }
+    case 'trashCan': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.16, ts * 0.14, ts * 0.4, 10), mat);
+      body.position.y = ts * 0.2;
+      const lid = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.17, ts * 0.17, ts * 0.04, 10), mat);
+      lid.position.y = ts * 0.42;
+      group.add(body, lid);
+      break;
+    }
+    case 'fence': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.9, ts * 0.06, ts * 0.04), mat);
+      rail.position.y = ts * 0.35;
+      group.add(rail);
+      for (const ox of [-0.4, -0.13, 0.13, 0.4]) {
+        const picket = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.06, ts * 0.5, ts * 0.06), mat);
+        picket.position.set(ox * ts, ts * 0.25, 0);
+        group.add(picket);
+      }
+      break;
+    }
+
+    case 'planter': {
+      const boxMat = new THREE.MeshLambertMaterial({ color });
+      const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.55, ts * 0.3, ts * 0.32), boxMat);
+      box.position.y = ts * 0.15;
+      const flowerMat = new THREE.MeshLambertMaterial({ color: '#e85d75' });
+      for (const [ox, oz] of [[-0.15, 0], [0.05, -0.05], [0.18, 0.06]]) {
+        const f = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.07, 6, 6), flowerMat);
+        f.position.set(ox * ts, ts * 0.35, oz * ts);
+        group.add(f);
+      }
+      group.add(box);
+      break;
+    }
+    case 'laundryPole': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const postGeo = new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, ts * 0.9, 6);
+      const post1 = new THREE.Mesh(postGeo, mat);
+      post1.position.set(-ts * 0.35, ts * 0.45, 0);
+      const post2 = new THREE.Mesh(postGeo, mat);
+      post2.position.set(ts * 0.35, ts * 0.45, 0);
+      const bar = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.015, ts * 0.015, ts * 0.72, 6), mat);
+      bar.rotation.z = Math.PI / 2;
+      bar.position.y = ts * 0.85;
+      const clothMat = new THREE.MeshLambertMaterial({ color: '#e8e2d0' });
+      for (const ox of [-0.18, 0.15]) {
+        const cloth = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.14, ts * 0.18, ts * 0.02), clothMat);
+        cloth.position.set(ox * ts, ts * 0.72, 0);
+        group.add(cloth);
+      }
+      group.add(post1, post2, bar);
+      break;
+    }
+
+    case 'jizoStatue': {
+      const stoneMat = new THREE.MeshLambertMaterial({ color, flatShading: true });
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.1, ts * 0.16, ts * 0.5, 8), stoneMat);
+      body.position.y = ts * 0.25;
+      const head = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.12, 8, 8), stoneMat);
+      head.position.y = ts * 0.56;
+      const bib = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.18, ts * 0.16, ts * 0.04), new THREE.MeshLambertMaterial({ color: '#c0392b' }));
+      bib.position.set(0, ts * 0.42, ts * 0.13);
+      group.add(body, head, bib);
+      break;
+    }
+    case 'trailSign': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const post = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.04, ts * 0.05, ts * 0.7, 6), mat);
+      post.position.y = ts * 0.35;
+      const arrow = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.55, ts * 0.18, ts * 0.03), new THREE.MeshLambertMaterial({ color: '#e9dcb8' }));
+      arrow.position.set(ts * 0.1, ts * 0.65, 0);
+      arrow.rotation.z = -0.15;
+      group.add(post, arrow);
+      break;
+    }
+
+    default: {
+      const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.4, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
+      box.position.y = ts * 0.2;
+      group.add(box);
+      break;
+    }
 
 /** プレイヤー・NPC共通の簡易キャラクターメッシュを作る */
 function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
