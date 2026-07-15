@@ -56,6 +56,12 @@ function build() {
   setPoints(tiles, [[16, 10], [29, 10]], TileType.ROCK); // 参道を護る狛犬代わりの岩
   setPoints(tiles, [[8, 8], [37, 8]], TileType.ROCK); // 杜の中の岩
 
+  // 参道の入口に鳥居、両脇に狛犬、境内には鐘
+  placeObject(tiles, objects, { type: ObjectType.TORII, x: 23, y: 20 });
+  placeObject(tiles, objects, { type: ObjectType.KOMAINU, x: 20, y: 16 });
+  placeObject(tiles, objects, { type: ObjectType.KOMAINU, x: 26, y: 16 });
+  placeObject(tiles, objects, { type: ObjectType.BELL, x: 17, y: 12 });
+
   placeNpc(tiles, npcs, { id: 'shrine_keeper_01', type: NpcType.SHRINE_KEEPER, x: 23, y: 17, name: '神主', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'shrine_visitor_01', type: NpcType.VILLAGER, x: 20, y: 20, name: '参拝者', facing: 'up' });
   placeNpc(tiles, npcs, { id: 'shrine_visitor_02', type: NpcType.VILLAGER, x: 27, y: 20, name: '参拝者', facing: 'left' });
