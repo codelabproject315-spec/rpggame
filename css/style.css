@@ -36,32 +36,11 @@ body {
 
 /* 以下はゲーム画面の上に重ねて表示するオーバーレイUI */
 h1 {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  margin: 0;
-  font-size: 15px;
-  letter-spacing: 0.05em;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 6px 12px;
-  border-radius: 6px;
-  z-index: 10;
-  pointer-events: none;
+  display: none;
 }
 
 #hud {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 12px;
-  color: #aab0bd;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 6px 12px;
-  border-radius: 6px;
-  z-index: 10;
+  display: none;
 }
 
 #hud button {
@@ -79,20 +58,7 @@ h1 {
 }
 
 #help {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 90vw;
-  font-size: 12px;
-  color: #cfd3dc;
-  line-height: 1.6;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 8px 16px;
-  border-radius: 6px;
-  z-index: 10;
-  pointer-events: none;
+  display: none;
 }
 
 /* 会話ウィンドウ */
