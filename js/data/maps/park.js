@@ -2,7 +2,7 @@ import { TileType } from '../tileTypes.js';
 import { BuildingType } from '../buildingTypes.js';
 import { ObjectType } from '../objectTypes.js';
 import { NpcType } from '../npcTypes.js';
-import { createGrid, fillRect, setPoints, setBorder } from '../../utils/grid.js';
+import { createGrid, fillRect, fillLine, setPoints, setBorder } from '../../utils/grid.js';
 import { placeBuilding, placeObject, placeNpc, defineExit } from '../mapHelpers.js';
 
 const WIDTH = 46;
@@ -15,74 +15,67 @@ function build() {
   const npcs = [];
   const exits = [];
 
-  // 縦の参道（北=広場, 南=公園）
-  fillRect(tiles, 22, 0, 3, HEIGHT, TileType.ROAD);
-
-  // 東西は森と岩で囲む（神社の杜）
+  // 北の出口だけがつながっている行き止まりの公園
+  fillRect(tiles, 22, 0, 3, 8, TileType.ROAD); // 入口からの道
   setBorder(tiles, TileType.FOREST, 1);
-  fillRect(tiles, 22, 0, 3, 1, TileType.ROAD); // 北口
-  fillRect(tiles, 22, HEIGHT - 1, 3, 1, TileType.ROAD); // 南口
-  fillRect(tiles, 0, 15, 1, 3, TileType.ROAD); // 西口（裏道で学校へ）
+  fillRect(tiles, 22, 0, 3, 1, TileType.ROAD); // 北口だけ空ける
 
-  // 裏道: 西口から参道へ抜ける横道
-  fillRect(tiles, 0, 15, 23, 3, TileType.ROAD);
+  // 花畑をぐるっと囲むように遊歩道を通す
+  fillRect(tiles, 5, 16, 15, 9, TileType.FLOWER);
+  fillRect(tiles, 27, 16, 13, 9, TileType.FLOWER);
+  fillLine(tiles, 5, 16, 5, 24, TileType.ROAD);
+  fillLine(tiles, 5, 24, 40, 24, TileType.ROAD);
+  fillLine(tiles, 40, 16, 40, 24, TileType.ROAD);
 
-  // 杜（参道の上下、横道より上側に配置）
-  fillRect(tiles, 6, 6, 8, 6, TileType.FOREST);
-  fillRect(tiles, 32, 6, 8, 6, TileType.FOREST);
+  // 蛇行する小川と橋
+  fillLine(tiles, 0, 11, 17, 11, TileType.RIVER);
+  fillLine(tiles, 17, 11, 17, 14, TileType.RIVER);
+  fillLine(tiles, 17, 14, WIDTH - 1, 14, TileType.RIVER);
+  fillRect(tiles, 22, 14, 3, 1, TileType.BRIDGE); // 道と交差する橋
 
-  // 神社裏手の鯉が泳ぐ池（左右対称、横道より下側）
-  fillRect(tiles, 10, 21, 5, 4, TileType.RIVER);
-  fillRect(tiles, 31, 21, 5, 4, TileType.RIVER);
-  setPoints(tiles, [[9, 22], [36, 22]], TileType.ROCK);
+  // 北東の小さな池
+  fillRect(tiles, 36, 3, 6, 5, TileType.RIVER);
+  setPoints(tiles, [[35, 4]], TileType.ROCK);
 
+  // 花畑に点在する木と岩
+  setPoints(tiles, [[9, 17], [14, 20], [33, 17], [38, 20]], TileType.TREE);
+  setPoints(tiles, [[18, 18], [31, 21]], TileType.ROCK);
+
+  // 公園ゲート
   placeBuilding(tiles, buildings, {
-    type: BuildingType.SHRINE,
-    x: 18, y: 9, w: 10, h: 6,
-    name: '神社',
+    type: BuildingType.PARK_GATE,
+    x: 20, y: 8, w: 6, h: 3,
+    name: '公園',
   });
 
-  // 参道の灯籠（石灯籠代わりの街灯）と、社の護り岩
-  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 26, y: 18 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 19, y: 18 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 27, y: 18 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 19, y: 3 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 26, y: 3 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 19, y: 24 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 26, y: 24 });
-  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 15, y: 23 });
-  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 30, y: 23 });
+  // 設置物
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 12, y: 18 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 30, y: 18 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 22, y: 22 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 19, y: 22 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 15, y: 24 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 28, y: 24 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 22, y: 26 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 22, y: 18 });
 
-  setPoints(tiles, [[16, 10], [29, 10]], TileType.ROCK); // 参道を護る狛犬代わりの岩
-  setPoints(tiles, [[8, 8], [37, 8]], TileType.ROCK); // 杜の中の岩
+  // 遊具エリアと噴水
+  placeObject(tiles, objects, { type: ObjectType.SWING, x: 9, y: 20 });
+  placeObject(tiles, objects, { type: ObjectType.SLIDE, x: 36, y: 20 });
+  placeObject(tiles, objects, { type: ObjectType.FOUNTAIN, x: 23, y: 20 });
 
-  // 参道の入口に鳥居、両脇に狛犬、境内には鐘
-  placeObject(tiles, objects, { type: ObjectType.TORII, x: 23, y: 20 });
-  placeObject(tiles, objects, { type: ObjectType.KOMAINU, x: 20, y: 16 });
-  placeObject(tiles, objects, { type: ObjectType.KOMAINU, x: 26, y: 16 });
-  placeObject(tiles, objects, { type: ObjectType.BELL, x: 17, y: 12 });
-
-  placeNpc(tiles, npcs, { id: 'shrine_keeper_01', type: NpcType.SHRINE_KEEPER, x: 23, y: 17, name: '神主', facing: 'down' });
-  placeNpc(tiles, npcs, { id: 'shrine_visitor_01', type: NpcType.VILLAGER, x: 20, y: 20, name: '参拝者', facing: 'up' });
-  placeNpc(tiles, npcs, { id: 'shrine_visitor_02', type: NpcType.VILLAGER, x: 27, y: 20, name: '参拝者', facing: 'left' });
-  placeNpc(tiles, npcs, { id: 'shrine_child_01', type: NpcType.STUDENT, x: 12, y: 16, name: '地元の子ども', facing: 'right' });
+  placeNpc(tiles, npcs, { id: 'park_visitor_01', type: NpcType.PARK_VISITOR, x: 17, y: 21, name: '来園者', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'park_visitor_02', type: NpcType.PARK_VISITOR, x: 27, y: 21, name: '来園者', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'park_visitor_03', type: NpcType.PARK_VISITOR, x: 13, y: 17, name: '来園者', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'park_visitor_04', type: NpcType.PARK_VISITOR, x: 34, y: 5, name: '来園者', facing: 'right' });
 
   defineExit(exits, {
     x: 22, y: 0, w: 3, h: 2,
-    target: 'plaza', targetX: 23, targetY: 27,
-  });
-  defineExit(exits, {
-    x: 22, y: HEIGHT - 2, w: 3, h: 2,
-    target: 'park', targetX: 23, targetY: 2,
-  });
-  defineExit(exits, {
-    x: 0, y: 15, w: 2, h: 3,
-    target: 'school', targetX: 43, targetY: 15,
+    target: 'shrine', targetX: 23, targetY: 27,
   });
 
   return {
-    id: 'shrine',
-    name: '神社',
+    id: 'park',
+    name: '公園',
     width: WIDTH,
     height: HEIGHT,
     tiles,
