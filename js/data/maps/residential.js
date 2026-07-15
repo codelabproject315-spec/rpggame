@@ -58,6 +58,11 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.MAILBOX, x: 6, y: 27 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 12, y: 27 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 5, y: 10 });
+  placeObject(tiles, objects, { type: ObjectType.WELL, x: 20, y: 18 });
+  placeObject(tiles, objects, { type: ObjectType.TRASH_CAN, x: 16, y: 15 });
+  placeObject(tiles, objects, { type: ObjectType.TRASH_CAN, x: 30, y: 16 });
+  placeObject(tiles, objects, { type: ObjectType.FENCE, x: 16, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.FENCE, x: 17, y: 13 });
 
   // 近所の住人NPC
   placeNpc(tiles, npcs, { id: 'residential_neighbor_01', type: NpcType.VILLAGER, x: 13, y: 18, name: '近所の住人', facing: 'down' });
