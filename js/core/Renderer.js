@@ -400,7 +400,7 @@ export class Renderer {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    this.renderer.setSize(container.clientWidth, container.clientHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(this.renderer.domElement);
 
     const ambient = new THREE.AmbientLight('#ffffff', 0.75);
@@ -416,6 +416,11 @@ export class Renderer {
     this.debugMeshes = [];
 
     this._buildPlayerMesh();
+  }
+
+  /** ウィンドウサイズが変わったときに描画サイズを更新する */
+  setSize(width, height) {
+    this.renderer.setSize(width, height);
   }
 
   _buildPlayerMesh() {
