@@ -407,8 +407,8 @@ function buildExitSignMesh(exit) {
   post.position.y = ts * 0.65;
   group.add(post);
 
-  const label = makeLabelSprite(`→ ${targetName}`, 56, 4.5);
-  label.position.y = ts * 1.9;
+  const label = makeLabelSprite(`→ ${targetName}`, 56, 9);
+  label.position.y = ts * 2.5;
   group.add(label);
 
   const cx = exit.x + exit.w / 2;
