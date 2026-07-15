@@ -19,20 +19,25 @@ function build() {
   setBorder(tiles, TileType.TREE, 1);
   fillRect(tiles, 13, 19, 4, 1, TileType.ROAD); // 南の出口部分だけ道にする
 
-  // 庭から南の出口までの通路
+  // 玄関から南の出口までの通路 + 前庭の小さな広場
   fillRect(tiles, 14, 8, 3, 12, TileType.ROAD);
+  fillRect(tiles, 10, 11, 10, 3, TileType.ROAD); // 前庭の広場
 
-  // 花壇まわりの装飾
+  // 生垣で囲まれた花の庭（左右対称、入口は1か所だけ）
   fillRect(tiles, 6, 3, 6, 5, TileType.FOREST);
+  fillRect(tiles, 7, 4, 4, 3, TileType.FLOWER);
+  fillRect(tiles, 8, 7, 1, 1, TileType.GRASS); // 南側に入口の隙間
+
   fillRect(tiles, 20, 3, 6, 5, TileType.FOREST);
-  setPoints(
-    tiles,
-    [
-      [10, 6], [11, 6], [10, 7],
-      [21, 6], [22, 6], [21, 7],
-    ],
-    TileType.FLOWER
-  );
+  fillRect(tiles, 21, 4, 4, 3, TileType.FLOWER);
+  fillRect(tiles, 22, 7, 1, 1, TileType.GRASS); // 南側に入口の隙間
+
+  // 裏庭の小さな池
+  fillRect(tiles, 5, 14, 4, 3, TileType.RIVER);
+  setPoints(tiles, [[9, 15], [4, 16]], TileType.ROCK);
+
+  // 反対側に点在する庭木
+  setPoints(tiles, [[21, 14], [24, 16], [22, 17]], TileType.TREE);
 
   // 主人公の家
   placeBuilding(tiles, buildings, {
@@ -46,6 +51,11 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 18, y: 8 });
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 20, y: 10 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 9, y: 10 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 12, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 18, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 11, y: 11 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 19, y: 11 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 15, y: 13 });
 
   // 家族NPC
   placeNpc(tiles, npcs, {
