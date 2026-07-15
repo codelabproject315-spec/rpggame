@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RPG風マップシステム デモ</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>RPG風テキストアドベンチャー ― マップ探索デモ</h1>
+
+  <div id="game-frame">
+    <div id="game-container"></div>
+  </div>
+
+  <div id="hud">
+    <span>WASD / 矢印キー: 移動</span>
+    <span>F1: デバッグ表示切替</span>
+    <button id="debug-toggle">デバッグ表示 ON/OFF</button>
+  </div>
+
+  <p id="help">
+    町 → 住宅街 → 商店街 → 広場 を中心に、広場から図書館・神社・学校へ、
+    さらに神社から公園、学校から森へつながっています。<br />
+    各エリアにNPCが立っていますが、今回は会話機能が未実装のため話しかけることはできません。
+  </p>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
