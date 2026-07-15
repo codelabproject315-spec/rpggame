@@ -18,6 +18,7 @@ export class DialogueUI {
     this.lineIndex = 0;
     this.isTyping = false;
     this.choices = null;
+    this.choicesVisible = false; // 選択肢ボタンが実際に画面に出ているか
     this.onChoiceSelected = null;
     this.onClose = null;
     this._typeTimer = null;
@@ -37,6 +38,7 @@ export class DialogueUI {
     this.lines = content.lines && content.lines.length ? content.lines : [''];
     this.lineIndex = 0;
     this.choices = content.choices || null;
+    this.choicesVisible = false;
     this.onChoiceSelected = handlers.onChoiceSelected || null;
     this.onClose = handlers.onClose || null;
 
@@ -83,6 +85,7 @@ export class DialogueUI {
   }
 
   _showChoices() {
+    this.choicesVisible = true;
     this.hintEl.textContent = '';
     this.choicesEl.innerHTML = '';
     this.choicesEl.classList.remove('hidden');
@@ -99,6 +102,7 @@ export class DialogueUI {
     const handler = this.onChoiceSelected;
     this.choicesEl.classList.add('hidden');
     this.choices = null;
+    this.choicesVisible = false;
     if (handler) handler(index);
   }
 
@@ -117,8 +121,8 @@ export class DialogueUI {
   advance() {
     if (!this.isOpen) return;
 
-    if (this.choices && this.choices.length) {
-      // 選択肢が出ている間はSpaceでは進めない（クリックか数字キーで選ぶ）
+    if (this.choicesVisible) {
+      // 選択肢が実際に表示されている間はSpaceでは進めない（クリックか数字キーで選ぶ）
       return;
     }
     if (this.isTyping) {
@@ -133,7 +137,10 @@ export class DialogueUI {
 
     const isLastLine = this.lineIndex >= this.lines.length - 1;
     if (isLastLine) {
-      this.close();
+      // 最後の行まで来ても、まだ選択肢が表示されていないなら
+      // （_onLineFinishedで表示されているはずなので、通常ここには来ない）
+      // 選択肢が無い場合のみ閉じる
+      if (!this.choices) this.close();
       return;
     }
     this.lineIndex++;
