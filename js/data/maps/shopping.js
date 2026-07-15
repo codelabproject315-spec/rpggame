@@ -2,7 +2,7 @@ import { TileType } from '../tileTypes.js';
 import { BuildingType } from '../buildingTypes.js';
 import { ObjectType } from '../objectTypes.js';
 import { NpcType } from '../npcTypes.js';
-import { createGrid, fillRect, setBorder } from '../../utils/grid.js';
+import { createGrid, fillRect, setPoints, setBorder } from '../../utils/grid.js';
 import { placeBuilding, placeObject, placeNpc, defineExit } from '../mapHelpers.js';
 
 const WIDTH = 30;
@@ -23,6 +23,18 @@ function build() {
   fillRect(tiles, 0, 9, 1, 3, TileType.ROAD); // 西口
   fillRect(tiles, WIDTH - 1, 9, 1, 3, TileType.ROAD); // 東口
 
+  // 北西: 生垣に囲まれた小さな庭
+  fillRect(tiles, 3, 2, 6, 5, TileType.FOREST);
+  fillRect(tiles, 4, 3, 4, 3, TileType.FLOWER);
+  fillRect(tiles, 5, 6, 1, 1, TileType.GRASS); // 入口の隙間
+
+  // 露店が並ぶ通り（商店の裏手）
+  fillRect(tiles, 17, 12, 8, 1, TileType.ROAD);
+
+  // 南西の小さな池
+  fillRect(tiles, 3, 13, 3, 3, TileType.RIVER);
+  setPoints(tiles, [[6, 14], [2, 14]], TileType.ROCK);
+
   // 商店
   placeBuilding(tiles, buildings, {
     type: BuildingType.SHOP,
@@ -37,9 +49,16 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 10, y: 6 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 10, y: 14 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 6, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 9, y: 4 });
+  placeObject(tiles, objects, { type: ObjectType.VENDING_MACHINE, x: 19, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.VENDING_MACHINE, x: 21, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 23, y: 13 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 17, y: 13 });
 
   placeNpc(tiles, npcs, { id: 'shopping_owner_01', type: NpcType.SHOPKEEPER, x: 19, y: 8, name: '店主', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'shopping_customer_01', type: NpcType.CUSTOMER, x: 8, y: 8, name: '買い物客', facing: 'right' });
+  placeNpc(tiles, npcs, { id: 'shopping_customer_02', type: NpcType.CUSTOMER, x: 20, y: 14, name: '買い物客', facing: 'up' });
+  placeNpc(tiles, npcs, { id: 'shopping_visitor_01', type: NpcType.VILLAGER, x: 5, y: 5, name: '通りすがりの住人', facing: 'down' });
 
   defineExit(exits, {
     x: 0, y: 9, w: 2, h: 3,
