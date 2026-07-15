@@ -6,7 +6,7 @@
 // （例: state = 'exploring' | 'dialogue' | 'menu'）。
 // ============================================================
 
-import { TILE_SIZE, VIEWPORT_WIDTH, VIEWPORT_HEIGHT } from '../constants.js';
+import { TILE_SIZE } from '../constants.js';
 import { Input } from './Input.js';
 import { Camera } from './Camera.js';
 import { Renderer } from './Renderer.js';
@@ -15,9 +15,11 @@ import { Player } from '../entities/Player.js';
 
 export class Game {
   constructor(container) {
+    this.container = container;
+
     this.input = new Input();
     this.mapManager = new MapManager(TILE_SIZE);
-    this.camera = new Camera(VIEWPORT_WIDTH / VIEWPORT_HEIGHT);
+    this.camera = new Camera(window.innerWidth / window.innerHeight);
     this.renderer = new Renderer(container);
 
     const start = this.mapManager.currentMap.playerStart || { x: 1, y: 1 };
@@ -28,6 +30,13 @@ export class Game {
 
     // 出口を踏んだ直後の連続トリガーを防ぐためのクールダウン
     this.transitionCooldown = 0;
+
+    window.addEventListener('resize', () => this._handleResize());
+  }
+
+  _handleResize() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.setAspect(window.innerWidth / window.innerHeight);
   }
 
   start() {
