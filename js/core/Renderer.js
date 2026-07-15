@@ -46,7 +46,7 @@ function makeLabelSprite(text, fontSize = 34, scaleMultiplier = 1) {
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
-  const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true });
+  const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true, fog: false });
   const sprite = new THREE.Sprite(material);
   const scale = 0.028 * scaleMultiplier;
   sprite.scale.set(canvas.width * scale, canvas.height * scale, 1);
@@ -407,8 +407,8 @@ function buildExitSignMesh(exit) {
   post.position.y = ts * 0.65;
   group.add(post);
 
-  const label = makeLabelSprite(`→ ${targetName}`, 56, 2.6);
-  label.position.y = ts * 1.6;
+  const label = makeLabelSprite(`→ ${targetName}`, 56, 4.5);
+  label.position.y = ts * 1.9;
   group.add(label);
 
   const cx = exit.x + exit.w / 2;
