@@ -26,7 +26,7 @@ const FACING_OFFSETS = {
 // モジュール内ヘルパー（クラスの状態を持たない純粋な生成関数群）
 // ------------------------------------------------------------
 
-function makeLabelSprite(text, fontSize = 34) {
+function makeLabelSprite(text, fontSize = 34, scaleMultiplier = 1) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   ctx.font = `bold ${fontSize}px sans-serif`;
@@ -48,7 +48,7 @@ function makeLabelSprite(text, fontSize = 34) {
   texture.colorSpace = THREE.SRGBColorSpace;
   const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true });
   const sprite = new THREE.Sprite(material);
-  const scale = 0.028;
+  const scale = 0.028 * scaleMultiplier;
   sprite.scale.set(canvas.width * scale, canvas.height * scale, 1);
   sprite.renderOrder = 999;
   return sprite;
@@ -407,8 +407,8 @@ function buildExitSignMesh(exit) {
   post.position.y = ts * 0.65;
   group.add(post);
 
-  const label = makeLabelSprite(`→ ${targetName}`, 34);
-  label.position.y = ts * 1.45;
+  const label = makeLabelSprite(`→ ${targetName}`, 56, 2.6);
+  label.position.y = ts * 1.6;
   group.add(label);
 
   const cx = exit.x + exit.w / 2;
