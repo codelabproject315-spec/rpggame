@@ -5,8 +5,8 @@ import { NpcType } from '../npcTypes.js';
 import { createGrid, fillRect, setPoints, setBorder } from '../../utils/grid.js';
 import { placeBuilding, placeObject, placeNpc, defineExit } from '../mapHelpers.js';
 
-const WIDTH = 30;
-const HEIGHT = 20;
+const WIDTH = 46;
+const HEIGHT = 30;
 
 function build() {
   const tiles = createGrid(WIDTH, HEIGHT, TileType.GRASS);
@@ -16,52 +16,60 @@ function build() {
   const exits = [];
 
   // 南の出口だけがつながっている行き止まりの図書館
-  fillRect(tiles, 14, 15, 3, 5, TileType.ROAD);
+  fillRect(tiles, 22, 22, 3, 8, TileType.ROAD);
   setBorder(tiles, TileType.FOREST, 1);
-  fillRect(tiles, 14, HEIGHT - 1, 3, 1, TileType.ROAD); // 南口だけ空ける
+  fillRect(tiles, 22, HEIGHT - 1, 3, 1, TileType.ROAD); // 南口だけ空ける
+  fillRect(tiles, 0, 16, 1, 3, TileType.ROAD); // 西口（裏道で商店街へ）
 
-  // 玄関前の小さな広場
-  fillRect(tiles, 10, 12, 10, 2, TileType.ROAD);
+  // 玄関前の広場
+  fillRect(tiles, 15, 18, 16, 3, TileType.ROAD);
+
+  // 裏道: 西口から玄関前の広場へ抜ける横道
+  fillRect(tiles, 0, 15, 23, 3, TileType.ROAD);
 
   // 北西: 読書ガーデン
-  fillRect(tiles, 2, 3, 6, 5, TileType.FOREST);
-  fillRect(tiles, 3, 4, 4, 3, TileType.FLOWER);
-  fillRect(tiles, 4, 7, 1, 1, TileType.GRASS); // 入口の隙間
+  fillRect(tiles, 4, 4, 9, 8, TileType.FOREST);
+  fillRect(tiles, 6, 6, 5, 4, TileType.FLOWER);
+  fillRect(tiles, 8, 11, 1, 1, TileType.GRASS); // 入口の隙間
 
   // 南東: 静かな中庭
-  fillRect(tiles, 21, 12, 6, 5, TileType.FOREST);
-  fillRect(tiles, 22, 13, 4, 3, TileType.FLOWER);
-  fillRect(tiles, 23, 12, 1, 1, TileType.GRASS); // 入口の隙間
+  fillRect(tiles, 32, 18, 9, 8, TileType.FOREST);
+  fillRect(tiles, 34, 20, 5, 4, TileType.FLOWER);
+  fillRect(tiles, 36, 18, 1, 1, TileType.GRASS); // 入口の隙間
 
   // 並木道
-  setPoints(tiles, [[12, 16], [18, 16], [12, 18], [18, 18]], TileType.TREE);
+  setPoints(tiles, [[18, 24], [27, 24], [18, 27], [27, 27]], TileType.TREE);
 
   placeBuilding(tiles, buildings, {
     type: BuildingType.LIBRARY,
-    x: 11, y: 5, w: 8, h: 6,
+    x: 17, y: 6, w: 12, h: 9,
     name: '図書館',
   });
 
-  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 15, y: 11 });
-  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 10, y: 13 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 20, y: 13 });
-  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 9, y: 8 });
-  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 20, y: 8 });
-  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 8, y: 6 });
-  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 19, y: 14 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 27, y: 14 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 12, y: 12 });
-  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 18, y: 12 });
-  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 17, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 23, y: 17 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 15, y: 20 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 30, y: 20 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 14, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 31, y: 12 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 12, y: 8 });
+  placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 29, y: 21 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 41, y: 21 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 18, y: 19 });
+  placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 28, y: 19 });
+  placeObject(tiles, objects, { type: ObjectType.BENCH, x: 26, y: 19 });
 
-  placeNpc(tiles, npcs, { id: 'library_librarian_01', type: NpcType.LIBRARIAN, x: 15, y: 12, name: '司書', facing: 'down' });
-  placeNpc(tiles, npcs, { id: 'library_reader_01', type: NpcType.VILLAGER, x: 20, y: 9, name: '利用者', facing: 'left' });
-  placeNpc(tiles, npcs, { id: 'library_reader_02', type: NpcType.VILLAGER, x: 24, y: 14, name: '利用者', facing: 'down' });
-  placeNpc(tiles, npcs, { id: 'library_visitor_01', type: NpcType.VILLAGER, x: 5, y: 5, name: '利用者', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'library_librarian_01', type: NpcType.LIBRARIAN, x: 23, y: 19, name: '司書', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'library_reader_01', type: NpcType.VILLAGER, x: 31, y: 13, name: '利用者', facing: 'left' });
+  placeNpc(tiles, npcs, { id: 'library_reader_02', type: NpcType.VILLAGER, x: 36, y: 21, name: '利用者', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'library_visitor_01', type: NpcType.VILLAGER, x: 8, y: 7, name: '利用者', facing: 'down' });
 
   defineExit(exits, {
-    x: 14, y: HEIGHT - 2, w: 3, h: 2,
-    target: 'plaza', targetX: 15, targetY: 2,
+    x: 22, y: HEIGHT - 2, w: 3, h: 2,
+    target: 'plaza', targetX: 23, targetY: 2,
+  });
+  defineExit(exits, {
+    x: 0, y: 16, w: 2, h: 3,
+    target: 'shopping', targetX: 22, targetY: 2,
   });
 
   return {
