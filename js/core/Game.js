@@ -21,6 +21,8 @@ import { AchievementManager } from './AchievementManager.js';
 import { AchievementUI } from './AchievementUI.js';
 import { MISSIONS } from '../data/missions.js';
 import { MissionUI } from './MissionUI.js';
+import { OmikujiUI } from './OmikujiUI.js';
+import { TreasureLockUI } from './TreasureLockUI.js';
 
 // プレイヤーが「向いている方向」を、話しかけ相手を探すためのベクトルに変換する
 const FACING_VECTORS = {
@@ -57,6 +59,9 @@ export class Game {
     );
 
     this.missionUI = new MissionUI(document.getElementById('mission-tracker'));
+    this.omikujiUI = new OmikujiUI(document.getElementById('omikuji-overlay'));
+    this.treasureLockUI = new TreasureLockUI(document.getElementById('treasure-lock-overlay'));
+    this.activeMinigame = null; // 'omikuji' | 'treasureLock' | null
 
     const start = this.mapManager.currentMap.playerStart || { x: 1, y: 1 };
     this.player = new Player(start.x, start.y, TILE_SIZE);
@@ -145,6 +150,12 @@ export class Game {
       return; // 会話中は移動・出口判定を行わない
     }
 
+    if (this.uiState === 'minigame') {
+      this.audio.updateFootsteps(dt, false);
+      this._updateMinigameInput();
+      return; // ミニゲーム中も移動・出口判定を行わない
+    }
+
     const moveVector = this.input.getMoveVector();
     const mapData = this.mapManager.currentMap;
     this.player.update(dt, moveVector, mapData, TILE_SIZE);
@@ -169,6 +180,21 @@ export class Game {
     for (let n = 1; n <= 9; n++) {
       if (this.input.wasJustPressed(`Digit${n}`)) {
         this.dialogueUI.selectChoiceByNumber(n);
+      }
+    }
+  }
+
+  /** ミニゲーム中の入力を、今アクティブなミニゲームへ振り分ける */
+  _updateMinigameInput() {
+    if (this.activeMinigame === 'omikuji') {
+      if (this.input.wasJustPressed('Space') || this.input.wasJustPressed('Enter')) {
+        this.omikujiUI.advance();
+      }
+    } else if (this.activeMinigame === 'treasureLock') {
+      for (let n = 1; n <= 3; n++) {
+        if (this.input.wasJustPressed(`Digit${n}`)) {
+          this.treasureLockUI.selectByNumber(n);
+        }
       }
     }
   }
@@ -226,6 +252,10 @@ export class Game {
     this.dialogueUI.show(result, {
       onChoiceSelected: (index) => {
         const choice = result.choices[index];
+        if (choice.minigame === 'omikuji') {
+          this._startOmikujiMinigame(npc);
+          return;
+        }
         const follow = this.dialogueManager.resolveChoice(choice, npc, this.gameState);
         this.dialogueUI.show(follow, { onClose: () => this._endDialogue() });
       },
@@ -237,7 +267,57 @@ export class Game {
     const result = this.dialogueManager.startObjectInteraction(this.mapManager.currentMap.id, obj, this.gameState);
     if (!result) return;
     this.uiState = 'dialogue';
-    this.dialogueUI.show(result, { onClose: () => this._endDialogue() });
+    const onClose = result.minigame === 'treasureLock'
+      ? () => this._startTreasureLockMinigame()
+      : () => this._endDialogue();
+    this.dialogueUI.show(result, { onClose });
+  }
+
+  /** おみくじミニゲームを開始し、終了後に結果のセリフへ戻す */
+  _startOmikujiMinigame(npc) {
+    this.dialogueUI.hide();
+    this.uiState = 'minigame';
+    this.activeMinigame = 'omikuji';
+    this.omikujiUI.open((picked) => {
+      this.activeMinigame = null;
+      if (picked.isDaikichi) this.gameState.setFlag('drewDaikichi');
+      this.uiState = 'dialogue';
+      const lines = [`おみくじの結果は……「${picked.result}」。`, picked.comment];
+      this.dialogueUI.show(
+        { speaker: npc.name, lines, choices: null },
+        { onClose: () => this._endDialogue() }
+      );
+    });
+  }
+
+  /** 宝箱の刻印パズルを開始し、成否に応じて結果のセリフへ戻す */
+  _startTreasureLockMinigame() {
+    this.uiState = 'minigame';
+    this.activeMinigame = 'treasureLock';
+    this.treasureLockUI.open((success) => {
+      this.activeMinigame = null;
+      this.uiState = 'dialogue';
+      if (success) {
+        this.gameState.setFlag('foundTreasureChest');
+        this.dialogueUI.show(
+          {
+            speaker: '宝箱',
+            lines: [
+              '刻印がかちりと音を立てて、宝箱が開いた!',
+              '中には、古い地図の切れ端が入っていた。',
+              '（この町のどこかに、まだ何か隠されているのかもしれない）',
+            ],
+            choices: null,
+          },
+          { onClose: () => this._endDialogue() }
+        );
+      } else {
+        this.dialogueUI.show(
+          { speaker: '宝箱', lines: ['刻印の順番が違ったようだ……もう一度試してみよう。'], choices: null },
+          { onClose: () => this._endDialogue() }
+        );
+      }
+    });
   }
 
   _endDialogue() {
