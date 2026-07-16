@@ -77,7 +77,9 @@ export const NPC_OVERRIDE_DIALOGUES = {
   shopping_owner_01: [
     {
       when: (s) => s.getQuest('lostCat') === 'found',
-      lines: ['ミケを見つけてくれたのか! 本当にありがとう!', 'あの子、すぐふらふらどこかに行っちゃうんだ。恩に着るよ。'],
+      lines: (s) => s.hasFlag('catGentle')
+        ? ['ミケを見つけてくれたのか! しかも、すっかり懐いてるじゃないか。', '本当にありがとうな。']
+        : ['ミケを見つけてくれたのか! 本当にありがとう!', 'あの子、すぐふらふらどこかに行っちゃうんだ。恩に着るよ。'],
       effect: (s) => s.setQuest('lostCat', 'complete'),
     },
     {
@@ -188,9 +190,22 @@ export const NPC_OVERRIDE_DIALOGUES = {
       lines: [
         'ほう……その地図の切れ端、見せてもらえますか。',
         'やはり。これは、この神社を守っていた一族に代々伝わっていたものです。',
-        '大吉を引いたあなたになら話しましょう。この町の氏神様は、元はその一族の始祖だったという言い伝えがあるのですよ。',
       ],
-      effect: (s) => s.setFlag('legendRevealed'),
+      choices: [
+        {
+          text: 'もっと詳しく聞く',
+          lines: [
+            '大吉を引いたあなたになら話しましょう。',
+            'この町の氏神様は、元はその一族の始祖だったという言い伝えがあるのですよ。',
+          ],
+          effect: (s) => { s.setFlag('legendRevealed'); s.setFlag('legendCurious'); },
+        },
+        {
+          text: '静かにうなずく',
+          lines: ['……多くは語りますまい。', 'ただ、この町とあなたの間には、何か縁があるのかもしれませんね。'],
+          effect: (s) => { s.setFlag('legendRevealed'); s.setFlag('legendRespectful'); },
+        },
+      ],
     },
     {
       when: (s) => !s.hasFlag('metNightVisitor') && !s.hasFlag('heardStargazerHintFromShrine'),
@@ -233,17 +248,32 @@ export const NPC_OVERRIDE_DIALOGUES = {
   // ---- 森: 謎の人影（意味深な分岐、フラグを立てる） ----
   forest_mystery_01: [
     {
-      when: (s) => s.hasFlag('mysterySecretRevealed'),
-      lines: ['……もう、話すことは話しただろう。', 'この森は、これからもお前を見ているぞ。'],
+      when: (s) => s.hasFlag('mysteryGrateful'),
+      lines: ['……また来たか。', '礼儀正しいお前を、この森は歓迎するぞ。'],
     },
     {
-      when: (s, npc) => s.hasFlag('mysteryTrusted') && s.getAffinity(npc.id) >= 4,
+      when: (s) => s.hasFlag('mysteryQuiet'),
+      lines: ['……。', 'お前はいつも多くを語らんな。それでいい。'],
+    },
+    {
+      when: (s, npc) => s.hasFlag('mysteryTrusted') && s.getAffinity(npc.id) >= 4 && !s.hasFlag('mysterySecretRevealed'),
       lines: [
         '……ここまで通ってくるとはな。',
         '正体を明かそう。私は、昔この森を守っていた森番の血を引く者だ。',
         '町の者たちが安心して暮らせるよう、今も森の異変を見張っている。それだけのことだ。',
       ],
-      effect: (s) => s.setFlag('mysterySecretRevealed'),
+      choices: [
+        {
+          text: '「話してくれてありがとう」',
+          lines: ['……礼を言われるとはな。', 'これからも、この森を頼むぞ。'],
+          effect: (s) => { s.setFlag('mysterySecretRevealed'); s.setFlag('mysteryGrateful'); },
+        },
+        {
+          text: '黙って頷く',
+          lines: ['……お前らしいな。', '言葉はいらぬ、ということか。'],
+          effect: (s) => { s.setFlag('mysterySecretRevealed'); s.setFlag('mysteryQuiet'); },
+        },
+      ],
     },
     {
       when: (s) => s.hasFlag('mysteryTrusted'),
@@ -273,13 +303,28 @@ export const NPC_OVERRIDE_DIALOGUES = {
   // ---- 神社: 商店街からいなくなった猫「ミケ」 ----
   shrine_cat_01: [
     {
-      when: (s) => s.hasFlag('catFound'),
-      lines: ['ミケは日向ぼっこ中だ。', '「ナー」（満足そうな顔をしている）'],
+      when: (s) => s.hasFlag('catGentle'),
+      lines: ['ミケはあなたに懐いたようだ。', '「ナー」（甘えるように鳴いている）'],
+    },
+    {
+      when: (s) => s.hasFlag('catBold'),
+      lines: ['ミケは日向ぼっこ中だ。', '「ナー」（相変わらず気まぐれな様子だ）'],
     },
     {
       when: (s) => s.getQuest('lostCat') === 'inProgress',
-      lines: ['よく見ると、商店街の店主が探していた三毛猫だ!', '「ナー」'],
-      effect: (s) => { s.setQuest('lostCat', 'found'); s.setFlag('catFound'); },
+      lines: ['よく見ると、商店街の店主が探していた三毛猫だ!'],
+      choices: [
+        {
+          text: '優しく抱き上げる',
+          lines: ['「ナー」（安心したように、目を細めている）'],
+          effect: (s) => { s.setQuest('lostCat', 'found'); s.setFlag('catFound'); s.setFlag('catGentle'); },
+        },
+        {
+          text: 'そっと声をかける',
+          lines: ['「ナー」（少し警戒しながらも、様子を見に近づいてきた）'],
+          effect: (s) => { s.setQuest('lostCat', 'found'); s.setFlag('catFound'); s.setFlag('catBold'); },
+        },
+      ],
     },
     {
       lines: ['見慣れない三毛猫が日向ぼっこをしている。', '声をかけても知らんぷりだ。'],
@@ -289,17 +334,32 @@ export const NPC_OVERRIDE_DIALOGUES = {
   // ---- 公園の隠しNPC: 夜だけ現れる、星を眺める人 ----
   park_stargazer_01: [
     {
-      when: (s, npc) => s.hasFlag('stargazerSecretRevealed'),
-      lines: ['今夜も、星がきれいですね。'],
+      when: (s, npc) => s.hasFlag('stargazerListened'),
+      lines: ['今夜も、星がきれいですね。', 'また今度、続きを話しますね。'],
     },
     {
-      when: (s, npc) => s.getAffinity(npc.id) >= 4,
+      when: (s, npc) => s.hasFlag('stargazerComforted'),
+      lines: ['……今日もここにいてくれるんですね。', 'それだけで、十分なんです。'],
+    },
+    {
+      when: (s, npc) => s.getAffinity(npc.id) >= 4 && !s.hasFlag('stargazerSecretRevealed'),
       lines: [
         '……あなたには、話してもいい気がしてきました。',
         '昔、大切な人とここで星を見る約束をしたんです。',
         'もうその人はいませんが、この時間だけは、あの頃に戻れる気がして。',
       ],
-      effect: (s) => s.setFlag('stargazerSecretRevealed'),
+      choices: [
+        {
+          text: '「その人のこと、聞かせてください」',
+          lines: ['……ありがとう。', 'いつかまた、ゆっくり話しますね。'],
+          effect: (s) => { s.setFlag('stargazerSecretRevealed'); s.setFlag('stargazerListened'); },
+        },
+        {
+          text: '何も言わず、隣に座る',
+          lines: ['……何も言わないでいてくれるんですね。', 'それだけで、救われる気がします。'],
+          effect: (s) => { s.setFlag('stargazerSecretRevealed'); s.setFlag('stargazerComforted'); },
+        },
+      ],
     },
     {
       when: (s, npc) => s.getAffinity(npc.id) >= 2,
