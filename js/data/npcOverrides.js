@@ -12,42 +12,9 @@
 
 // ============================================================
 
-/**
- * おみくじを1回引く。結果に応じたセリフを返し、
- * 大吉を引いたときだけ実績用のフラグを立てる。
- * ※ 毎回結果が変わるように、この関数自体を choice.lines に渡す
- *   （DialogueManagerが呼び出し時に評価する）。
- */
-function drawOmikuji(state) {
-  const table = [
-    { result: '大吉', weight: 5 },
-    { result: '中吉', weight: 15 },
-    { result: '小吉', weight: 20 },
-    { result: '吉', weight: 25 },
-    { result: '末吉', weight: 20 },
-    { result: '凶', weight: 15 },
-  ];
-  const total = table.reduce((sum, e) => sum + e.weight, 0);
-  let roll = Math.random() * total;
-  let picked = table[table.length - 1].result;
-  for (const entry of table) {
-    if (roll < entry.weight) { picked = entry.result; break; }
-    roll -= entry.weight;
-  }
-
-  if (picked === '大吉') state.setFlag('drewDaikichi');
-
-  const comments = {
-    '大吉': '何をしても上手くいく、最高の運勢です。',
-    '中吉': 'なかなかの好運。落ち着いて過ごしましょう。',
-    '小吉': 'ささやかな幸運が訪れそうです。',
-    '吉': '穏やかで、悪くない一日になりそうです。',
-    '末吉': '焦らず、ゆっくりいきましょう。',
-    '凶': '今日は無理をせず、慎重に過ごしましょう。',
-  };
-
-  return [`おみくじの結果は……「${picked}」。`, comments[picked]];
-}
+// おみくじの抽選そのものは js/core/OmikujiUI.js 側のミニゲームで行う。
+// ここでは choice に minigame: 'omikuji' を持たせるだけで、
+// 実際の処理は Game.js が引き継ぐ。
 
 export const NPC_OVERRIDE_DIALOGUES = {
   // ---- 主人公の家: 母 ----
@@ -221,7 +188,7 @@ export const NPC_OVERRIDE_DIALOGUES = {
       choices: [
         {
           text: 'おみくじを引く',
-          lines: (state) => drawOmikuji(state),
+          minigame: 'omikuji',
         },
         {
           text: '何もしない',
