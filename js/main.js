@@ -22,3 +22,12 @@ fullscreenButton.addEventListener('click', () => {
 document.addEventListener('fullscreenchange', () => {
   fullscreenButton.textContent = document.fullscreenElement ? '全画面を解除' : '全画面';
 });
+
+// 操作説明パネルの開閉（ヘッダー部分をクリックで折りたたみ）
+const hudHeader = document.getElementById('hud-header');
+const hudBody = document.getElementById('hud-body');
+const hudToggleIcon = document.getElementById('hud-toggle-icon');
+hudHeader.addEventListener('click', () => {
+  hudBody.classList.toggle('collapsed');
+  hudToggleIcon.classList.toggle('collapsed');
+});
