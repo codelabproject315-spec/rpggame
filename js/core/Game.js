@@ -26,6 +26,8 @@ import { MissionUI } from './MissionUI.js';
 import { MissionLogUI } from './MissionLogUI.js';
 import { OmikujiUI } from './OmikujiUI.js';
 import { TreasureLockUI } from './TreasureLockUI.js';
+import { FishingUI } from './FishingUI.js';
+import { JankenUI } from './JankenUI.js';
 
 // プレイヤーが「向いている方向」を、話しかけ相手を探すためのベクトルに変換する
 const FACING_VECTORS = {
@@ -66,7 +68,9 @@ export class Game {
     this.missionLogUI = new MissionLogUI(document.getElementById('mission-log'));
     this.omikujiUI = new OmikujiUI(document.getElementById('omikuji-overlay'));
     this.treasureLockUI = new TreasureLockUI(document.getElementById('treasure-lock-overlay'));
-    this.activeMinigame = null; // 'omikuji' | 'treasureLock' | null
+    this.fishingUI = new FishingUI(document.getElementById('fishing-overlay'));
+    this.jankenUI = new JankenUI(document.getElementById('janken-overlay'));
+    this.activeMinigame = null; // 'omikuji' | 'treasureLock' | 'fishing' | 'janken' | null
 
     const start = this.mapManager.currentMap.playerStart || { x: 1, y: 1 };
     this.player = new Player(start.x, start.y, TILE_SIZE);
@@ -218,6 +222,19 @@ export class Game {
           this.treasureLockUI.selectByNumber(n);
         }
       }
+    } else if (this.activeMinigame === 'fishing') {
+      if (this.input.wasJustPressed('Space') || this.input.wasJustPressed('Enter')) {
+        this.fishingUI.advance();
+      }
+    } else if (this.activeMinigame === 'janken') {
+      if (this.input.wasJustPressed('Space') || this.input.wasJustPressed('Enter')) {
+        this.jankenUI.advance();
+      }
+      for (let n = 1; n <= 3; n++) {
+        if (this.input.wasJustPressed(`Digit${n}`)) {
+          this.jankenUI.selectByNumber(n);
+        }
+      }
     }
   }
 
@@ -278,6 +295,10 @@ export class Game {
           this._startOmikujiMinigame(npc);
           return;
         }
+        if (choice.minigame === 'janken') {
+          this._startJankenMinigame(npc);
+          return;
+        }
         const follow = this.dialogueManager.resolveChoice(choice, npc, this.gameState);
         this.dialogueUI.show(follow, { onClose: () => this._endDialogue() });
       },
@@ -291,7 +312,9 @@ export class Game {
     this.uiState = 'dialogue';
     const onClose = result.minigame === 'treasureLock'
       ? () => this._startTreasureLockMinigame()
-      : () => this._endDialogue();
+      : result.minigame === 'fishing'
+        ? () => this._startFishingMinigame()
+        : () => this._endDialogue();
     this.dialogueUI.show(result, { onClose });
   }
 
@@ -339,6 +362,54 @@ export class Game {
           { onClose: () => this._endDialogue() }
         );
       }
+    });
+  }
+
+  /** 釣りミニゲームを開始し、結果に応じてセリフへ戻す */
+  _startFishingMinigame() {
+    this.dialogueUI.hide();
+    this.uiState = 'minigame';
+    this.activeMinigame = 'fishing';
+    this.fishingUI.open((fish) => {
+      this.activeMinigame = null;
+      this.uiState = 'dialogue';
+      if (fish) {
+        this.gameState.collectItem(fish.id);
+        this.dialogueUI.show(
+          { speaker: '釣り', lines: [`${fish.name}を釣り上げた!`, 'コレクション帳に追加された。'], choices: null },
+          { onClose: () => this._endDialogue() }
+        );
+      } else {
+        this.dialogueUI.show(
+          { speaker: '釣り', lines: ['……逃げられてしまった。', 'また挑戦してみよう。'], choices: null },
+          { onClose: () => this._endDialogue() }
+        );
+      }
+    });
+  }
+
+  /** じゃんけんミニゲームを開始し、勝敗に応じてセリフへ戻す */
+  _startJankenMinigame(npc) {
+    this.dialogueUI.hide();
+    this.uiState = 'minigame';
+    this.activeMinigame = 'janken';
+    this.jankenUI.open((outcome) => {
+      this.activeMinigame = null;
+      this.uiState = 'dialogue';
+      let lines;
+      if (outcome === 'win') {
+        this.gameState.setFlag('wonJanken');
+        this.gameState.collectItem('item_janken_medal');
+        lines = ['やった、勝った!', 'これ、勝った人にあげてるんだ。受け取って!'];
+      } else if (outcome === 'lose') {
+        lines = ['あ〜、負けちゃった。', 'また挑戦してね!'];
+      } else {
+        lines = ['あいこだね!', 'もう一回やる?'];
+      }
+      this.dialogueUI.show(
+        { speaker: npc.name, lines, choices: null },
+        { onClose: () => this._endDialogue() }
+      );
     });
   }
 
