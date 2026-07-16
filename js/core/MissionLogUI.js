@@ -17,7 +17,7 @@ const STATUS_LABEL = {
 export class MissionLogUI {
   constructor(containerEl) {
     this.container = containerEl;
-    this.panelCollapsed = false; // デフォルトで開いた状態
+    this.panelCollapsed = true; // デフォルトで閉じた状態
   }
 
   /** allMissions: [{ id, title, objective, hint, status }] （statusは 'notStarted' | 'inProgress' | 'complete'） */
