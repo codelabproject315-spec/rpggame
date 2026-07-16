@@ -62,6 +62,8 @@ function build() {
   placeNpc(tiles, npcs, { id: 'forest_mystery_01', type: NpcType.MYSTERY, x: 33, y: 9, name: '謎の人影', facing: 'down' });
   // 木漏れ日の広場で迷っている旅人
   placeNpc(tiles, npcs, { id: 'forest_wanderer_01', type: NpcType.VILLAGER, x: 24, y: 5, name: '道に迷った旅人', facing: 'down' });
+  // 木漏れ日の広場にいる木こり（のこぎりをくれる）
+  placeNpc(tiles, npcs, { id: 'forest_woodcutter_01', type: NpcType.WOODCUTTER, x: 29, y: 4, name: '木こり', facing: 'down' });
 
   defineExit(exits, {
     x: 0, y: 14, w: 2, h: 3,
