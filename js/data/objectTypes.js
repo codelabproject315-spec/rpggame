@@ -69,8 +69,8 @@ export const OBJECT_DEFINITIONS = {
     onInteract: null,
   },
   [ObjectType.SPARKLE]: {
-    name: 'キラキラ光るもの',
-    color: '#ffe066',
+    name: '光のビーコン',
+    color: '#e0293f',
     shape: 'sparkle',
     walkable: false,
     onInteract: null,
