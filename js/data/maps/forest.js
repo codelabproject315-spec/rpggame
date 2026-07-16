@@ -1,8 +1,9 @@
 import { TileType } from '../tileTypes.js';
+import { BuildingType } from '../buildingTypes.js';
 import { ObjectType } from '../objectTypes.js';
 import { NpcType } from '../npcTypes.js';
 import { createGrid, fillRect, fillLine, setPoints, setBorder } from '../../utils/grid.js';
-import { placeObject, placeNpc, defineExit } from '../mapHelpers.js';
+import { placeBuilding, placeObject, placeNpc, defineExit } from '../mapHelpers.js';
 
 const WIDTH = 46;
 const HEIGHT = 30;
@@ -58,12 +59,27 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 23, y: 7 });
   placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 39, y: 14 });
 
+  placeObject(tiles, objects, { type: ObjectType.FISHING_SPOT, x: 19, y: 15 }); // 釣りスポット(川べり)
+
   // 森の奥に佇む謎の人影
   placeNpc(tiles, npcs, { id: 'forest_mystery_01', type: NpcType.MYSTERY, x: 33, y: 9, name: '謎の人影', facing: 'down' });
   // 木漏れ日の広場で迷っている旅人
   placeNpc(tiles, npcs, { id: 'forest_wanderer_01', type: NpcType.VILLAGER, x: 24, y: 5, name: '道に迷った旅人', facing: 'down' });
   // 木漏れ日の広場にいる木こり（のこぎりをくれる）
   placeNpc(tiles, npcs, { id: 'forest_woodcutter_01', type: NpcType.WOODCUTTER, x: 29, y: 4, name: '木こり', facing: 'down' });
+
+  // 南西に、中に入れる「古い蔵」を配置（中は迷路になっている）
+  fillRect(tiles, 5, 17, 10, 8, TileType.GRASS);
+  placeBuilding(tiles, buildings, {
+    type: BuildingType.STOREHOUSE,
+    x: 6, y: 17, w: 7, h: 3,
+    name: '古い蔵',
+  });
+  fillRect(tiles, 7, 20, 6, 4, TileType.ROAD); // 蔵の前の小さな広場
+  defineExit(exits, {
+    x: 8, y: 20, w: 2, h: 1,
+    target: 'maze', targetX: 11, targetY: 17,
+  });
 
   defineExit(exits, {
     x: 0, y: 14, w: 2, h: 3,
