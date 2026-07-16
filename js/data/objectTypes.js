@@ -15,6 +15,7 @@ export const ObjectType = {
   TREASURE_CHEST: 'treasureChest',
   FLOWER_BED: 'flowerBed',
   SPARKLE: 'sparkle',
+  THICKET: 'thicket',
 };
 
 export const OBJECT_DEFINITIONS = {
@@ -71,6 +72,13 @@ export const OBJECT_DEFINITIONS = {
     name: 'キラキラ光るもの',
     color: '#ffe066',
     shape: 'sparkle',
+    walkable: false,
+    onInteract: null,
+  },
+  [ObjectType.THICKET]: {
+    name: '茂み',
+    color: '#2f6b3a',
+    shape: 'thicket',
     walkable: false,
     onInteract: null,
   },
