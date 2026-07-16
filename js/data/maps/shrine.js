@@ -53,6 +53,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 15, y: 23 });
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 30, y: 23 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 23, y: 5 }); // 隠しアイテム: 鈴の欠片
+  placeObject(tiles, objects, { type: ObjectType.FISHING_SPOT, x: 12, y: 25 }); // 釣りスポット(西側の池)
 
   setPoints(tiles, [[16, 10], [29, 10]], TileType.ROCK); // 参道を護る狛犬代わりの岩
   setPoints(tiles, [[8, 8], [37, 8]], TileType.ROCK); // 杜の中の岩
