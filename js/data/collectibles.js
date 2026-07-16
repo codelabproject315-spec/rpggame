@@ -87,4 +87,44 @@ export const COLLECTIBLES = [
     description: '町の言い伝えを聞かせてくれた神主から授かった御守り。',
     source: 'choice',
   },
+  {
+    id: 'item_maze_treasure',
+    name: '蔵の迷路のお宝',
+    description: '古い蔵の迷路をクリアして見つけた、埃をかぶったお宝。',
+    source: 'hidden',
+  },
+
+  // ---- 釣りで手に入る魚 ----
+  {
+    id: 'fish_river',
+    name: '川魚',
+    description: '森の川べりで釣り上げた、銀色に光る川魚。',
+    source: 'fishing',
+  },
+  {
+    id: 'fish_pond',
+    name: '池の魚',
+    description: '神社の池で釣り上げた、丸々とした魚。',
+    source: 'fishing',
+  },
+  {
+    id: 'fish_rare',
+    name: '幻の魚',
+    description: '公園の池で釣り上げた、めったに釣れない幻の魚。',
+    source: 'fishing',
+  },
+
+  // ---- ミニゲームの勝利報酬 ----
+  {
+    id: 'item_janken_medal',
+    name: 'じゃんけんチャンピオンバッジ',
+    description: '広場のじゃんけん好きな生徒に勝ってもらった、手作りのバッジ。',
+    source: 'minigame',
+  },
+  {
+    id: 'item_hideseek_charm',
+    name: 'かくれんぼの記念品',
+    description: '公園の子どもとのかくれんぼで見つけてもらった、小さな記念品。',
+    source: 'minigame',
+  },
 ];
