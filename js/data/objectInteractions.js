@@ -92,6 +92,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -107,6 +108,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -122,6 +124,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -137,6 +140,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -152,6 +156,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -167,6 +172,7 @@ export const OBJECT_INTERACTIONS = {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
@@ -182,6 +188,7 @@ export const OBJECT_INTERACTIONS = {
   'plaza:15,9': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
@@ -193,6 +200,7 @@ export const OBJECT_INTERACTIONS = {
   'shopping:8,11': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
@@ -204,6 +212,7 @@ export const OBJECT_INTERACTIONS = {
   'school:6,24': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
@@ -215,6 +224,7 @@ export const OBJECT_INTERACTIONS = {
   'library:8,12': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
@@ -226,6 +236,7 @@ export const OBJECT_INTERACTIONS = {
   'residential:49,24': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
@@ -237,6 +248,7 @@ export const OBJECT_INTERACTIONS = {
   'home:17,17': {
     getResult(state) {
       if (!state.hasFlag('hasSaw')) {
+        state.setFlag('sawHintSeen');
         return {
           speaker: '茂み',
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
