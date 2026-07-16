@@ -530,4 +530,97 @@ export const NPC_OVERRIDE_DIALOGUES = {
       ],
     },
   ],
+
+  // ---- 広場: じゃんけん好きな生徒（ミニゲーム: じゃんけん対決） ----
+  plaza_janken_01: [
+    {
+      when: (s) => s.hasFlag('wonJanken'),
+      lines: ['また勝負する?', 'じゃんけんはいつでも受けて立つよ!'],
+      choices: [
+        { text: 'じゃんけんする', minigame: 'janken' },
+        { text: 'また今度', lines: ['またね!'] },
+      ],
+    },
+    {
+      lines: ['ねえ、じゃんけんしない?', '勝ったらいいものあげるよ!'],
+      choices: [
+        { text: 'じゃんけんする', minigame: 'janken' },
+        { text: '今はやめておく', lines: ['そっか、気が向いたら誘ってね。'] },
+      ],
+    },
+  ],
+
+  // ---- 公園: かくれんぼ好きな子ども（ミニゲーム: かくれんぼ） ----
+  park_kid_01: [
+    {
+      when: (s) => s.getQuest('hideSeek') === 'hiding',
+      lines: ['どこに隠れてると思う?', '当ててみて!'],
+      choices: [
+        {
+          text: '茂みの中を探す',
+          lines: (s) => (s.getQuest('hideSeekSpot') === 'bush'
+            ? ['「見つかっちゃった!」', 'すごい、当たりだよ!']
+            : ['……いない。', '「ここじゃないよー」']),
+          effect: (s) => {
+            const hit = s.getQuest('hideSeekSpot') === 'bush';
+            s.setQuest('hideSeek', hit ? 'found' : 'hiding');
+            if (hit) { s.setFlag('wonHideSeek'); s.collectItem('item_hideseek_charm'); }
+          },
+        },
+        {
+          text: 'ベンチの下を探す',
+          lines: (s) => (s.getQuest('hideSeekSpot') === 'bench'
+            ? ['「見つかっちゃった!」', 'すごい、当たりだよ!']
+            : ['……いない。', '「ここじゃないよー」']),
+          effect: (s) => {
+            const hit = s.getQuest('hideSeekSpot') === 'bench';
+            s.setQuest('hideSeek', hit ? 'found' : 'hiding');
+            if (hit) { s.setFlag('wonHideSeek'); s.collectItem('item_hideseek_charm'); }
+          },
+        },
+        {
+          text: '木の陰を探す',
+          lines: (s) => (s.getQuest('hideSeekSpot') === 'tree'
+            ? ['「見つかっちゃった!」', 'すごい、当たりだよ!']
+            : ['……いない。', '「ここじゃないよー」']),
+          effect: (s) => {
+            const hit = s.getQuest('hideSeekSpot') === 'tree';
+            s.setQuest('hideSeek', hit ? 'found' : 'hiding');
+            if (hit) { s.setFlag('wonHideSeek'); s.collectItem('item_hideseek_charm'); }
+          },
+        },
+      ],
+    },
+    {
+      when: (s) => s.getQuest('hideSeek') === 'found',
+      lines: ['もう一回やる?', '今度は違うところに隠れるね!'],
+      choices: [
+        {
+          text: 'もう一度遊ぶ',
+          lines: ['隠れたよ! 探してみて!'],
+          effect: (s) => {
+            const spots = ['bush', 'bench', 'tree'];
+            s.setQuest('hideSeekSpot', spots[Math.floor(Math.random() * spots.length)]);
+            s.setQuest('hideSeek', 'hiding');
+          },
+        },
+        { text: 'また今度', lines: ['またね!'] },
+      ],
+    },
+    {
+      lines: ['ねえねえ、かくれんぼしない?', '「茂み」「ベンチの下」「木の陰」のどこかに隠れるよ!'],
+      choices: [
+        {
+          text: '遊ぶ',
+          lines: ['隠れたよ! 探してみて!'],
+          effect: (s) => {
+            const spots = ['bush', 'bench', 'tree'];
+            s.setQuest('hideSeekSpot', spots[Math.floor(Math.random() * spots.length)]);
+            s.setQuest('hideSeek', 'hiding');
+          },
+        },
+        { text: '今はやめておく', lines: ['そっか、また誘ってね!'] },
+      ],
+    },
+  ],
 };
