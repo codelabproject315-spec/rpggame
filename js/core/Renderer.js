@@ -253,65 +253,65 @@ function buildObjectMesh(obj) {
 
   switch (def.shape) {
     case 'signboard': {
-      const post = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.06, ts * 0.5, ts * 0.06), new THREE.MeshLambertMaterial({ color }));
-      post.position.y = ts * 0.25;
-      const board = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.6, ts * 0.35, ts * 0.05), new THREE.MeshLambertMaterial({ color: '#e9dcb8' }));
-      board.position.y = ts * 0.55;
+      const post = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.08, ts * 0.65, ts * 0.08), new THREE.MeshLambertMaterial({ color }));
+      post.position.y = ts * 0.325;
+      const board = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.8, ts * 0.5, ts * 0.07), new THREE.MeshLambertMaterial({ color: '#e9dcb8' }));
+      board.position.y = ts * 0.72;
       group.add(post, board);
       break;
     }
     case 'bench': {
-      const seat = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.75, ts * 0.12, ts * 0.3), new THREE.MeshLambertMaterial({ color }));
-      seat.position.y = ts * 0.32;
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.95, ts * 0.16, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
+      seat.position.y = ts * 0.38;
       const legMat = new THREE.MeshLambertMaterial({ color });
-      const legGeo = new THREE.BoxGeometry(ts * 0.08, ts * 0.3, ts * 0.08);
+      const legGeo = new THREE.BoxGeometry(ts * 0.1, ts * 0.36, ts * 0.1);
       const leg1 = new THREE.Mesh(legGeo, legMat);
-      leg1.position.set(-ts * 0.3, ts * 0.15, 0);
+      leg1.position.set(-ts * 0.38, ts * 0.18, 0);
       const leg2 = new THREE.Mesh(legGeo, legMat);
-      leg2.position.set(ts * 0.3, ts * 0.15, 0);
+      leg2.position.set(ts * 0.38, ts * 0.18, 0);
       group.add(seat, leg1, leg2);
       break;
     }
     case 'streetlight': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, ts * 0.9, 6), new THREE.MeshLambertMaterial({ color }));
-      pole.position.y = ts * 0.45;
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.045, ts * 0.045, ts * 1.1, 6), new THREE.MeshLambertMaterial({ color }));
+      pole.position.y = ts * 0.55;
       const lamp = new THREE.Mesh(
-        new THREE.SphereGeometry(ts * 0.14, 8, 8),
+        new THREE.SphereGeometry(ts * 0.19, 8, 8),
         new THREE.MeshStandardMaterial({ color: '#f4d35e', emissive: '#f4d35e', emissiveIntensity: 0.6 })
       );
-      lamp.position.y = ts * 0.95;
+      lamp.position.y = ts * 1.15;
       group.add(pole, lamp);
       break;
     }
     case 'mailbox': {
-      const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.35, ts * 0.4, ts * 0.3), new THREE.MeshLambertMaterial({ color }));
-      box.position.y = ts * 0.3;
+      const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.46, ts * 0.52, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
+      box.position.y = ts * 0.4;
       const top = new THREE.Mesh(
-        new THREE.CylinderGeometry(ts * 0.175, ts * 0.175, ts * 0.3, 10, 1, false, 0, Math.PI),
+        new THREE.CylinderGeometry(ts * 0.23, ts * 0.23, ts * 0.4, 10, 1, false, 0, Math.PI),
         new THREE.MeshLambertMaterial({ color })
       );
       top.rotation.z = Math.PI / 2;
       top.rotation.y = Math.PI / 2;
-      top.position.y = ts * 0.5;
+      top.position.y = ts * 0.66;
       group.add(box, top);
       break;
     }
     case 'vendingMachine': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.6, ts * 0.85, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
-      body.position.y = ts * 0.42;
+      const body = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.75, ts * 1.05, ts * 0.5), new THREE.MeshLambertMaterial({ color }));
+      body.position.y = ts * 0.52;
       const panel = new THREE.Mesh(
-        new THREE.BoxGeometry(ts * 0.46, ts * 0.4, ts * 0.02),
+        new THREE.BoxGeometry(ts * 0.58, ts * 0.5, ts * 0.03),
         new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 0.25 })
       );
-      panel.position.set(0, ts * 0.5, ts * 0.21);
+      panel.position.set(0, ts * 0.62, ts * 0.26);
       group.add(body, panel);
       break;
     }
     case 'treasureChest': {
-      const base = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.6, ts * 0.35, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
-      base.position.y = ts * 0.18;
-      const lid = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.62, ts * 0.18, ts * 0.42), new THREE.MeshLambertMaterial({ color: '#8a5a1c' }));
-      lid.position.y = ts * 0.42;
+      const base = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.78, ts * 0.46, ts * 0.52), new THREE.MeshLambertMaterial({ color }));
+      base.position.y = ts * 0.23;
+      const lid = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.8, ts * 0.24, ts * 0.54), new THREE.MeshLambertMaterial({ color: '#8a5a1c' }));
+      lid.position.y = ts * 0.55;
       group.add(base, lid);
       break;
     }
@@ -328,13 +328,15 @@ function buildObjectMesh(obj) {
       break;
     }
     case 'sparkle': {
-      const core = new THREE.Mesh(
-        new THREE.OctahedronGeometry(ts * 0.18, 0),
-        new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.8 })
-      );
-      core.position.y = ts * 0.45;
+      const mat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.9 });
+      const core = new THREE.Mesh(new THREE.OctahedronGeometry(ts * 0.3, 0), mat);
+      core.position.y = ts * 0.55;
       core.rotation.y = Math.PI / 6;
       group.add(core);
+      const spike = new THREE.Mesh(new THREE.OctahedronGeometry(ts * 0.16, 0), mat);
+      spike.position.y = ts * 0.55;
+      spike.rotation.set(Math.PI / 4, Math.PI / 4, 0);
+      group.add(spike);
       break;
     }
     case 'thicket': {
@@ -365,7 +367,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
   const group = new THREE.Group();
 
   const body = new THREE.Mesh(
-    new THREE.CapsuleGeometry(ts * 0.22, height * 0.5, 4, 8),
+    new THREE.CapsuleGeometry(ts * 0.27, height * 0.5, 4, 8),
     new THREE.MeshLambertMaterial({ color: bodyColor })
   );
   body.position.y = height * 0.42;
@@ -373,7 +375,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
 
   if (accentColor) {
     const accent = new THREE.Mesh(
-      new THREE.TorusGeometry(ts * 0.17, ts * 0.04, 6, 12),
+      new THREE.TorusGeometry(ts * 0.21, ts * 0.05, 6, 12),
       new THREE.MeshLambertMaterial({ color: accentColor })
     );
     accent.rotation.x = Math.PI / 2;
@@ -382,7 +384,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
   }
 
   const head = new THREE.Mesh(
-    new THREE.SphereGeometry(ts * 0.2, 10, 10),
+    new THREE.SphereGeometry(ts * 0.25, 10, 10),
     new THREE.MeshLambertMaterial({ color: skinColor })
   );
   head.position.y = height * 0.82;
