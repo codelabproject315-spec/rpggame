@@ -39,8 +39,26 @@ h1 {
   display: none;
 }
 
+/* 操作説明パネル（画面右下） */
 #hud {
-  display: none;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 10px 14px;
+  background: rgba(20, 22, 28, 0.8);
+  border: 1px solid #454c5c;
+  border-radius: 8px;
+  z-index: 20;
+  font-size: 11.5px;
+  color: #cfd3da;
+}
+
+#hud span {
+  white-space: nowrap;
 }
 
 #hud button {
@@ -51,6 +69,7 @@ h1 {
   padding: 6px 12px;
   cursor: pointer;
   font-size: 12px;
+  margin-top: 4px;
 }
 
 #hud button:hover {
