@@ -1,0 +1,577 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* 画面いっぱいに表示するのでスクロールバーは出さない */
+}
+
+body {
+  background: #1c1f26;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  color: #eaeaea;
+}
+
+/* ゲーム画面をブラウザいっぱいに表示する */
+#game-frame {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #222;
+}
+
+#game-container {
+  width: 100%;
+  height: 100%;
+}
+
+#game-container canvas {
+  display: block;
+}
+
+/* 以下はゲーム画面の上に重ねて表示するオーバーレイUI */
+h1 {
+  display: none;
+}
+
+#hud {
+  display: none;
+}
+
+#hud button {
+  background: #2c313d;
+  color: #eaeaea;
+  border: 1px solid #454c5c;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#hud button:hover {
+  background: #3a4152;
+}
+
+#help {
+  display: none;
+}
+
+/* 会話ウィンドウ */
+#dialogue-box {
+  position: fixed;
+  left: 50%;
+  bottom: 60px;
+  transform: translateX(-50%);
+  width: min(720px, 92vw);
+  background: rgba(15, 17, 22, 0.92);
+  border: 2px solid #454c5c;
+  border-radius: 10px;
+  padding: 16px 20px;
+  z-index: 20;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+#dialogue-box.hidden {
+  display: none;
+}
+
+.dialogue-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.dialogue-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #f2f2f2;
+  min-height: 3.4em;
+  white-space: pre-wrap;
+}
+
+.dialogue-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dialogue-choices.hidden {
+  display: none;
+}
+
+.dialogue-choices button {
+  text-align: left;
+  background: #2c313d;
+  color: #eaeaea;
+  border: 1px solid #454c5c;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.dialogue-choices button:hover {
+  background: #3a4152;
+  border-color: #ffe066;
+}
+
+.dialogue-hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #9aa0ac;
+  text-align: right;
+}
+
+/* 画面右上のUIをまとめるラッパー（実績トースト） */
+#hud-top-right {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* 画面左上のUIをまとめるラッパー（ミッション表示） */
+#hud-top-left {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 30;
+}
+
+/* ミッション表示（進行中の目的） */
+#mission-tracker {
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  max-width: 300px;
+  background: rgba(20, 22, 28, 0.92);
+  border: 1px solid #5c8aa0;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+#mission-tracker.hidden {
+  display: none;
+}
+
+/* パネル全体の開閉ヘッダー */
+.mission-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(92, 138, 160, 0.18);
+}
+
+.mission-panel-header:hover {
+  background: rgba(92, 138, 160, 0.3);
+}
+
+.mission-panel-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #7fd1e8;
+  letter-spacing: 0.08em;
+}
+
+.mission-panel-toggle-icon {
+  font-size: 11px;
+  color: #7fd1e8;
+  transition: transform 0.15s ease;
+}
+
+.mission-panel-toggle-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.mission-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: rgba(92, 138, 160, 0.25);
+}
+
+.mission-panel-body.collapsed {
+  display: none;
+}
+
+/* 個別のミッション項目（クリックでヒントの開閉） */
+.mission-item {
+  background: rgba(20, 22, 28, 0.96);
+  padding: 8px 12px;
+}
+
+.mission-item-label {
+  font-size: 10px;
+  color: #7fd1e8;
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.mission-item-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.mission-item-objective {
+  font-size: 11.5px;
+  color: #cfd3da;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+.mission-item-hint {
+  display: flex;
+  gap: 5px;
+  font-size: 11px;
+  color: #f0cf7a;
+  margin-top: 5px;
+  line-height: 1.4;
+  padding-top: 5px;
+  border-top: 1px dashed rgba(240, 207, 122, 0.3);
+}
+
+.mission-item-hint-icon {
+  flex-shrink: 0;
+}
+
+/* 左上の全ミッション一覧でのみ使うステータス表示 */
+.mission-item-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.mission-item-status {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.mission-item-status-notStarted {
+  color: #9aa2ad;
+  background: rgba(154, 162, 173, 0.15);
+}
+
+.mission-item-status-inProgress {
+  color: #7fd1e8;
+  background: rgba(127, 209, 232, 0.15);
+}
+
+.mission-item-status-complete {
+  color: #8fd694;
+  background: rgba(143, 214, 148, 0.15);
+}
+
+/* 左上一覧で、未着手・クリア済みの項目は少し目立たなくする */
+.mission-item-notStarted .mission-item-title,
+.mission-item-notStarted .mission-item-objective {
+  opacity: 0.7;
+}
+
+.mission-item-complete .mission-item-title {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.mission-item-complete .mission-item-objective,
+.mission-item-complete .mission-item-hint {
+  opacity: 0.55;
+}
+
+/* ミニゲームの共通オーバーレイ */
+.minigame-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 11, 15, 0.6);
+  z-index: 40;
+}
+
+.minigame-overlay.hidden {
+  display: none;
+}
+
+.omikuji-panel,
+.treasure-lock-panel {
+  background: rgba(20, 22, 28, 0.97);
+  border: 2px solid #ffe066;
+  border-radius: 14px;
+  padding: 28px 36px;
+  min-width: 260px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+/* おみくじミニゲーム */
+.omikuji-box {
+  width: 70px;
+  height: 130px;
+  margin: 0 auto 16px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #b8451f 0%, #8f3316 100%);
+  border: 3px solid #e8c37a;
+  position: relative;
+  cursor: pointer;
+}
+
+.omikuji-box::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2a2a2a;
+}
+
+.omikuji-box.shaking {
+  animation: omikuji-shake 0.12s infinite;
+}
+
+@keyframes omikuji-shake {
+  0% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+
+.omikuji-prompt {
+  font-size: 13px;
+  color: #cfd3da;
+  margin-top: 8px;
+}
+
+.omikuji-result {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #454c5c;
+  animation: omikuji-reveal 0.4s ease;
+  cursor: pointer;
+}
+
+.omikuji-result.hidden {
+  display: none;
+}
+
+@keyframes omikuji-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.omikuji-result-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffe066;
+}
+
+.omikuji-result-comment {
+  font-size: 13px;
+  color: #eaeaea;
+  margin-top: 6px;
+}
+
+/* 宝箱の刻印パズル */
+.treasure-lock-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 18px;
+}
+
+.treasure-lock-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.treasure-lock-symbol {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: #2c313d;
+  border: 2px solid #454c5c;
+  color: #eaeaea;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.treasure-lock-symbol:hover:not(:disabled) {
+  border-color: #ffe066;
+  background: #3a4152;
+}
+
+.treasure-lock-symbol .treasure-lock-emoji {
+  font-size: 26px;
+}
+
+.treasure-lock-symbol .treasure-lock-num {
+  font-size: 10px;
+  color: #9aa0ac;
+}
+
+.treasure-lock-symbol.selected {
+  border-color: #7fd1e8;
+  background: rgba(127, 209, 232, 0.15);
+}
+
+.treasure-lock-symbol:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.treasure-lock-feedback {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #cfd3da;
+  min-height: 1.4em;
+}
+
+/* 実績トースト */
+#achievement-toasts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.achievement-toast {
+  background: rgba(20, 22, 28, 0.95);
+  border: 1px solid #ffe066;
+  border-radius: 8px;
+  padding: 10px 16px;
+  min-width: 220px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.achievement-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.achievement-toast-label {
+  font-size: 10px;
+  color: #ffe066;
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.achievement-toast-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.achievement-toast-desc {
+  font-size: 11px;
+  color: #b8bcc4;
+  margin-top: 2px;
+}
+
+/* 実績一覧パネル */
+#achievement-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 90vw);
+  max-height: 70vh;
+  overflow-y: auto;
+  background: rgba(15, 17, 22, 0.96);
+  border: 2px solid #454c5c;
+  border-radius: 10px;
+  padding: 16px 20px;
+  z-index: 25;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+#achievement-panel.hidden {
+  display: none;
+}
+
+.achievement-panel-header {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.achievement-panel-hint {
+  font-size: 11px;
+  color: #9aa0ac;
+  font-weight: normal;
+}
+
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.achievement-item {
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #333a46;
+}
+
+.achievement-item.unlocked {
+  background: rgba(255, 224, 102, 0.08);
+  border-color: #ffe066;
+}
+
+.achievement-item.locked {
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.5;
+}
+
+.achievement-item-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #f2f2f2;
+}
+
+.achievement-item-desc {
+  font-size: 11px;
+  color: #b8bcc4;
+  margin-top: 2px;
+}
