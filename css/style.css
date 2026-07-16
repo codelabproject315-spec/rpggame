@@ -288,6 +288,17 @@ h1 {
   display: none; /* Chrome / Safari / Edge */
 }
 
+/* 進行中ミッション（右上）も、数が増えたら画面内でスクロールできるようにする */
+#mission-tracker .mission-panel-body {
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+#mission-tracker .mission-panel-body::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
+}
+
 /* 個別のミッション項目（クリックでヒントの開閉） */
 .mission-item {
   background: rgba(20, 22, 28, 0.96);
