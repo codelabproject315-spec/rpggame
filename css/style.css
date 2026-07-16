@@ -217,10 +217,16 @@ h1 {
   display: none;
 }
 
-/* 全ミッション一覧（左上）は項目数が多くなりがちなので、画面内に収まるようスクロールさせる */
+/* 全ミッション一覧（左上）は項目数が多くなりがちなので、画面内に収まるようスクロールさせる
+   （スクロールバー自体は見た目に出さない） */
 #mission-log .mission-panel-body {
   max-height: calc(100vh - 90px);
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+#mission-log .mission-panel-body::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
 }
 
 /* 個別のミッション項目（クリックでヒントの開閉） */
