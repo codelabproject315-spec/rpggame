@@ -56,6 +56,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 12, y: 23 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 32, y: 23 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 16, y: 7 }); // 隠しアイテム: 町内会の記念コイン
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 15, y: 9 }); // 生垣の外の目印
 
   // 広場は人の行き交うハブなのでNPCを多めに配置
   placeNpc(tiles, npcs, { id: 'plaza_npc_01', type: NpcType.STUDENT, x: 20, y: 13, name: '下校中の生徒', facing: 'down' });
