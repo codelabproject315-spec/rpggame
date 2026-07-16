@@ -59,6 +59,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 17, y: 37 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 7, y: 15 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 50, y: 30 }); // 隠しアイテム: 瓶に入った手紙
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 49, y: 24 }); // 生垣の外の目印
 
   // 近所の住人NPC
   placeNpc(tiles, npcs, { id: 'residential_neighbor_01', type: NpcType.VILLAGER, x: 18, y: 25, name: '近所の住人', facing: 'down' });
