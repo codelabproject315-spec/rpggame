@@ -155,8 +155,9 @@ h1 {
   z-index: 30;
 }
 
-/* ミッション表示（進行中の目的） */
-#mission-tracker {
+/* ミッション表示（進行中の目的／全ミッション一覧、共通の見た目） */
+#mission-tracker,
+#mission-log {
   display: flex;
   flex-direction: column;
   min-width: 240px;
@@ -168,7 +169,8 @@ h1 {
   overflow: hidden;
 }
 
-#mission-tracker.hidden {
+#mission-tracker.hidden,
+#mission-log.hidden {
   display: none;
 }
 
@@ -180,11 +182,11 @@ h1 {
   padding: 8px 12px;
   cursor: pointer;
   user-select: none;
-  background: rgba(92, 138, 160, 0.18);
+  background: rgba(92, 138, 160, 0.5);
 }
 
 .mission-panel-header:hover {
-  background: rgba(92, 138, 160, 0.3);
+  background: rgba(92, 138, 160, 0.65);
 }
 
 .mission-panel-title {
