@@ -61,7 +61,7 @@ function build() {
   placeNpc(tiles, npcs, { id: 'shrine_visitor_01', type: NpcType.VILLAGER, x: 20, y: 20, name: '参拝者', facing: 'up' });
   placeNpc(tiles, npcs, { id: 'shrine_visitor_02', type: NpcType.VILLAGER, x: 27, y: 20, name: '参拝者', facing: 'left' });
   placeNpc(tiles, npcs, { id: 'shrine_child_01', type: NpcType.STUDENT, x: 12, y: 16, name: '地元の子ども', facing: 'right' });
-  placeNpc(tiles, npcs, { id: 'shrine_cat_01', type: NpcType.VILLAGER, x: 12, y: 20, name: '三毛猫', facing: 'down' });
+  placeNpc(tiles, npcs, { id: 'shrine_cat_01', type: NpcType.CAT, x: 12, y: 20, name: '三毛猫', facing: 'down' });
 
   defineExit(exits, {
     x: 22, y: 0, w: 3, h: 2,
