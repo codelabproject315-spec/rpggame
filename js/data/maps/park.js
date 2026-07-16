@@ -58,9 +58,12 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 22, y: 26 });
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 22, y: 18 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 10, y: 20 }); // 隠しアイテム: 四つ葉のクローバー
+  placeObject(tiles, objects, { type: ObjectType.FISHING_SPOT, x: 37, y: 8 }); // 釣りスポット(北東の池)
 
   placeNpc(tiles, npcs, { id: 'park_visitor_01', type: NpcType.PARK_VISITOR, x: 17, y: 21, name: '来園者', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'park_visitor_02', type: NpcType.PARK_VISITOR, x: 27, y: 21, name: '来園者', facing: 'down' });
+  // かくれんぼをしたがる子ども（ミニゲーム: かくれんぼ）
+  placeNpc(tiles, npcs, { id: 'park_kid_01', type: NpcType.STUDENT, x: 30, y: 22, name: 'かくれんぼ好きな子ども', facing: 'up' });
   placeNpc(tiles, npcs, { id: 'park_visitor_03', type: NpcType.PARK_VISITOR, x: 13, y: 17, name: '来園者', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'park_visitor_04', type: NpcType.PARK_VISITOR, x: 34, y: 5, name: '来園者', facing: 'right' });
 
