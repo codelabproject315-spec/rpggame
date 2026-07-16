@@ -16,6 +16,7 @@ import library from './library.js';
 import shrine from './shrine.js';
 import forest from './forest.js';
 import plaza from './plaza.js';
+import maze from './maze.js';
 
 export const MAPS = {
   [home.id]: home,
@@ -27,6 +28,7 @@ export const MAPS = {
   [shrine.id]: shrine,
   [forest.id]: forest,
   [plaza.id]: plaza,
+  [maze.id]: maze,
 };
 
 export const START_MAP_ID = 'home';
