@@ -56,6 +56,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 36, y: 9 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 3, y: 24 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 7, y: 21 }); // 隠しアイテム: 古い卒業アルバムの写真
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 6, y: 24 }); // 生垣の外の目印
 
   placeNpc(tiles, npcs, { id: 'school_teacher_01', type: NpcType.TEACHER, x: 23, y: 13, name: '先生', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'school_teacher_02', type: NpcType.TEACHER, x: 29, y: 20, name: '先生', facing: 'down' });
