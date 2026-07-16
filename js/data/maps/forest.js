@@ -53,6 +53,11 @@ function build() {
   // 森の奥に隠された宝箱
   placeObject(tiles, objects, { type: ObjectType.TREASURE_CHEST, x: 36, y: 15 });
 
+  // 宝箱を開けるための手がかり「刻印の立て札」を森の各所に配置
+  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 5, y: 15 });
+  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 23, y: 7 });
+  placeObject(tiles, objects, { type: ObjectType.SIGNBOARD, x: 39, y: 14 });
+
   // 森の奥に佇む謎の人影
   placeNpc(tiles, npcs, { id: 'forest_mystery_01', type: NpcType.MYSTERY, x: 33, y: 9, name: '謎の人影', facing: 'down' });
   // 木漏れ日の広場で迷っている旅人
