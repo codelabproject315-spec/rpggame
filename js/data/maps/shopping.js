@@ -60,6 +60,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.FLOWER_BED, x: 26, y: 20 });
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 22, y: 6 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 7, y: 7 }); // 隠しアイテム: 福引の景品
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 8, y: 11 }); // 生垣の外の目印
 
   placeNpc(tiles, npcs, { id: 'shopping_owner_01', type: NpcType.SHOPKEEPER, x: 29, y: 13, name: '店主', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'shopping_customer_01', type: NpcType.CUSTOMER, x: 12, y: 12, name: '買い物客', facing: 'right' });
