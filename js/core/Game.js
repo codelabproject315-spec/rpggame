@@ -19,6 +19,8 @@ import { DayNightCycle } from './DayNightCycle.js';
 import { AudioManager } from './AudioManager.js';
 import { AchievementManager } from './AchievementManager.js';
 import { AchievementUI } from './AchievementUI.js';
+import { MISSIONS } from '../data/missions.js';
+import { MissionUI } from './MissionUI.js';
 
 // プレイヤーが「向いている方向」を、話しかけ相手を探すためのベクトルに変換する
 const FACING_VECTORS = {
@@ -54,6 +56,8 @@ export class Game {
       document.getElementById('achievement-panel')
     );
 
+    this.missionUI = new MissionUI(document.getElementById('mission-tracker'));
+
     const start = this.mapManager.currentMap.playerStart || { x: 1, y: 1 };
     this.player = new Player(start.x, start.y, TILE_SIZE);
 
@@ -61,6 +65,7 @@ export class Game {
     this.uiState = 'exploring';
     this._markVisited(this.mapManager.currentMap.id);
     this._checkAchievements();
+    this._updateMissions();
 
     this.debug = false;
     this.lastTime = 0;
@@ -88,6 +93,16 @@ export class Game {
       this.achievementUI.showUnlocked(achievement);
       this.audio.playChime();
     }
+  }
+
+  /** 現在アクティブなミッションだけを右上に描画し直す */
+  _updateMissions() {
+    const active = MISSIONS.filter((m) => m.isActive(this.gameState)).map((m) => ({
+      id: m.id,
+      title: m.title,
+      objective: m.getObjective(this.gameState),
+    }));
+    this.missionUI.render(active);
   }
 
   /** そのNPCが「今」出現しているかどうか（隠しNPC用の条件判定） */
@@ -228,6 +243,7 @@ export class Game {
   _endDialogue() {
     this.uiState = 'exploring';
     this._checkAchievements();
+    this._updateMissions();
   }
 
   _handleTransition(exit) {
@@ -238,6 +254,7 @@ export class Game {
     // 遷移直後に再度出口判定してしまい行き来し続けるのを防ぐ
     this.transitionCooldown = 0.4;
     this._checkAchievements();
+    this._updateMissions();
   }
 
   _render() {
