@@ -91,6 +91,12 @@ export const OBJECT_INTERACTIONS = {
       if (state.hasItem('item_coin')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
+      }
       state.collectItem('item_coin');
       return { speaker: 'キラキラ光るもの', lines: ['庭園の隅に、少し古い記念コインが落ちていた。'] };
     },
@@ -99,6 +105,12 @@ export const OBJECT_INTERACTIONS = {
     getResult(state) {
       if (state.hasItem('item_raffle')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
+      }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
       }
       state.collectItem('item_raffle');
       return { speaker: 'キラキラ光るもの', lines: ['庭先に、福引の景品が落ちていた!'] };
@@ -109,6 +121,12 @@ export const OBJECT_INTERACTIONS = {
       if (state.hasItem('item_yearbook')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
+      }
       state.collectItem('item_yearbook');
       return { speaker: 'キラキラ光るもの', lines: ['花壇のそばに、色あせた卒業アルバムの写真が落ちていた。'] };
     },
@@ -117,6 +135,12 @@ export const OBJECT_INTERACTIONS = {
     getResult(state) {
       if (state.hasItem('item_bookmark')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
+      }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
       }
       state.collectItem('item_bookmark');
       return { speaker: 'キラキラ光るもの', lines: ['読書ガーデンに、手作りのしおりが落ちていた。'] };
@@ -127,6 +151,12 @@ export const OBJECT_INTERACTIONS = {
       if (state.hasItem('item_bottle')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
       }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
+      }
       state.collectItem('item_bottle');
       return { speaker: 'キラキラ光るもの', lines: ['庭先に、瓶に入った小さな手紙が落ちていた。'] };
     },
@@ -135,6 +165,12 @@ export const OBJECT_INTERACTIONS = {
     getResult(state) {
       if (state.hasItem('item_charm_child')) {
         return { speaker: 'キラキラ光るもの', lines: ['もう拾った後のようだ。'] };
+      }
+      if (!state.hasFlag('hasSaw')) {
+        return {
+          speaker: '茂み',
+          lines: ['この先は木や生垣が茂っていて、うまく通れない。', 'のこぎりがあれば切り開けそうだ。森の木こりに会いに行こう。'],
+        };
       }
       state.collectItem('item_charm_child');
       return { speaker: 'キラキラ光るもの', lines: ['庭の花の陰に、幼い頃のお守りが落ちていた。'] };
