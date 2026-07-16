@@ -337,6 +337,17 @@ function buildObjectMesh(obj) {
       group.add(core);
       break;
     }
+    case 'thicket': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const mound = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.32, 8, 6), mat);
+      mound.position.y = ts * 0.2;
+      mound.scale.y = 0.7;
+      group.add(mound);
+      const twig = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.18, ts * 0.3, 6), mat);
+      twig.position.y = ts * 0.42;
+      group.add(twig);
+      break;
+    }
     default: {
       const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.4, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
       box.position.y = ts * 0.2;
