@@ -259,7 +259,7 @@ export const OBJECT_INTERACTIONS = {
   },
 
   // ---- 蔵の迷路のお宝部屋 ----
-  'maze:18,1': {
+  'maze:0,1': {
     getResult(state) {
       if (state.hasItem('item_maze_treasure')) {
         return { speaker: '宝箱', lines: ['空になった宝箱だ。よく踏破したものだ。'] };
