@@ -179,7 +179,7 @@ export const MISSIONS = [
   },
   {
     id: 'explorer',
-    title: '町の案内人：9つのエリアを訪れよう',
+    title: '町の案内人：10のエリアを訪れよう',
     isActive: (s) => {
       const count = ALL_MAP_IDS.filter((id) => s.hasFlag(`visited_${id}`)).length;
       return count >= 2 && count < ALL_MAP_IDS.length;
@@ -187,7 +187,7 @@ export const MISSIONS = [
     isCompleted: (s) => ALL_MAP_IDS.every((id) => s.hasFlag(`visited_${id}`)),
     getObjective: (s) => {
       const count = ALL_MAP_IDS.filter((id) => s.hasFlag(`visited_${id}`)).length;
-      return `町の9つのエリアを訪れよう（${count}/9）`;
+      return `町の10のエリアを訪れよう（${count}/${ALL_MAP_IDS.length}）`;
     },
     getHint: () => 'まだ行ったことのない場所を探して、町中を歩き回ってみよう',
   },
@@ -201,10 +201,10 @@ export const MISSIONS = [
   },
   {
     id: 'itemCollector',
-    title: 'コレクター：隠しアイテムを12個集めよう',
-    isActive: (s) => s.getItemCount() >= 1 && s.getItemCount() < 12,
-    isCompleted: (s) => s.getItemCount() >= 12,
-    getObjective: (s) => `隠しアイテムを集めよう（${s.getItemCount()}/12個）`,
+    title: 'コレクター：隠しアイテムを18個集めよう',
+    isActive: (s) => s.getItemCount() >= 1 && s.getItemCount() < 18,
+    isCompleted: (s) => s.getItemCount() >= 18,
+    getObjective: (s) => `隠しアイテムを集めよう（${s.getItemCount()}/18個）`,
     getHint: () => '町のあちこちの茂みや花壇を探してみよう（Kキーでコレクション帳が見られるよ）',
   },
 ];
