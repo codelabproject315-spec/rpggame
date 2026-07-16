@@ -263,8 +263,7 @@ h1 {
 .mission-panel-body {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  background: rgba(92, 138, 160, 0.25);
+  padding: 2px 0;
 }
 
 .mission-panel-body.collapsed {
@@ -286,7 +285,10 @@ h1 {
 /* 個別のミッション項目（クリックでヒントの開閉） */
 .mission-item {
   background: rgba(20, 22, 28, 0.96);
-  padding: 8px 12px;
+  padding: 9px 12px;
+  border: 1px solid rgba(127, 209, 232, 0.25);
+  border-radius: 6px;
+  margin: 6px 8px;
 }
 
 .mission-item-label {
