@@ -6,6 +6,15 @@
 // 個別に反応を変えられるようにするため）。
 // ============================================================
 
+import { MAPS } from './maps/index.js';
+import { TileType } from './tileTypes.js';
+
+/** のこぎりで茂みを切り開いた後、実際にそのタイルを通行可能にする */
+function clearThicket(mapId, x, y) {
+  const map = MAPS[mapId];
+  if (map && map.tiles[y]) map.tiles[y][x] = TileType.GRASS;
+}
+
 export const OBJECT_INTERACTIONS = {
   // 森の宝箱（js/data/maps/forest.js の配置座標と対応）
   // 3つの刻印の立て札をすべて見つけるまでは開かず、
@@ -194,7 +203,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_plaza_15_9')) {
+        state.setFlag('clearedThicket_plaza_15_9');
+        clearThicket('plaza', 15, 9);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
   'shopping:8,11': {
@@ -206,7 +220,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_shopping_8_11')) {
+        state.setFlag('clearedThicket_shopping_8_11');
+        clearThicket('shopping', 8, 11);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
   'school:6,24': {
@@ -218,7 +237,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_school_6_24')) {
+        state.setFlag('clearedThicket_school_6_24');
+        clearThicket('school', 6, 24);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
   'library:8,12': {
@@ -230,7 +254,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_library_8_12')) {
+        state.setFlag('clearedThicket_library_8_12');
+        clearThicket('library', 8, 12);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
   'residential:49,24': {
@@ -242,7 +271,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_residential_49_24')) {
+        state.setFlag('clearedThicket_residential_49_24');
+        clearThicket('residential', 49, 24);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
   'home:17,17': {
@@ -254,7 +288,12 @@ export const OBJECT_INTERACTIONS = {
           lines: ['奥の方に、何か光るものが見える気がする……', '生垣が濃くて、うまく通れない。のこぎりがあれば切り開けそうだ。', '森の木こりに会いに行こう。'],
         };
       }
-      return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
+      if (!state.hasFlag('clearedThicket_home_17_17')) {
+        state.setFlag('clearedThicket_home_17_17');
+        clearThicket('home', 17, 17);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+      }
+      return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
   },
 
