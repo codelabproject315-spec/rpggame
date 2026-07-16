@@ -367,12 +367,34 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height, accesso
   const ts = TILE_SIZE;
   const group = new THREE.Group();
 
-  const body = new THREE.Mesh(
-    new THREE.CapsuleGeometry(ts * 0.33, height * 0.5, 4, 8),
-    new THREE.MeshLambertMaterial({ color: bodyColor })
+  const torsoColor = new THREE.Color(bodyColor);
+  const pantsColor = torsoColor.clone().offsetHSL(0, 0, -0.18);
+
+  // 脚（2本、ズボン色は上着より少し暗く）
+  const legGeo = new THREE.BoxGeometry(ts * 0.18, height * 0.32, ts * 0.18);
+  const legMat = new THREE.MeshLambertMaterial({ color: pantsColor });
+  for (const side of [-1, 1]) {
+    const leg = new THREE.Mesh(legGeo, legMat);
+    leg.position.set(side * ts * 0.13, height * 0.2, 0);
+    group.add(leg);
+  }
+
+  // 胴体（角ばった箱にして、円柱っぽさをなくす）
+  const torso = new THREE.Mesh(
+    new THREE.BoxGeometry(ts * 0.52, height * 0.34, ts * 0.3),
+    new THREE.MeshLambertMaterial({ color: torsoColor })
   );
-  body.position.y = height * 0.42;
-  group.add(body);
+  torso.position.y = height * 0.52;
+  group.add(torso);
+
+  // 腕（2本）
+  const armGeo = new THREE.BoxGeometry(ts * 0.15, height * 0.3, ts * 0.15);
+  const armMat = new THREE.MeshLambertMaterial({ color: torsoColor });
+  for (const side of [-1, 1]) {
+    const arm = new THREE.Mesh(armGeo, armMat);
+    arm.position.set(side * ts * 0.33, height * 0.5, 0);
+    group.add(arm);
+  }
 
   if (accentColor) {
     const accent = new THREE.Mesh(
@@ -380,7 +402,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height, accesso
       new THREE.MeshLambertMaterial({ color: accentColor })
     );
     accent.rotation.x = Math.PI / 2;
-    accent.position.y = height * 0.58;
+    accent.position.y = height * 0.62;
     group.add(accent);
   }
 
