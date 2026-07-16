@@ -15,7 +15,7 @@
 export class MissionUI {
   constructor(containerEl) {
     this.container = containerEl;
-    this.panelCollapsed = false; // デフォルトで開いた状態
+    this.panelCollapsed = true; // デフォルトで閉じた状態
   }
 
   /** activeMissions: [{ id, title, objective, hint }] */
