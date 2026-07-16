@@ -185,6 +185,162 @@ h1 {
   line-height: 1.4;
 }
 
+/* ミニゲームの共通オーバーレイ */
+.minigame-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 11, 15, 0.6);
+  z-index: 40;
+}
+
+.minigame-overlay.hidden {
+  display: none;
+}
+
+.omikuji-panel,
+.treasure-lock-panel {
+  background: rgba(20, 22, 28, 0.97);
+  border: 2px solid #ffe066;
+  border-radius: 14px;
+  padding: 28px 36px;
+  min-width: 260px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+/* おみくじミニゲーム */
+.omikuji-box {
+  width: 70px;
+  height: 130px;
+  margin: 0 auto 16px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #b8451f 0%, #8f3316 100%);
+  border: 3px solid #e8c37a;
+  position: relative;
+  cursor: pointer;
+}
+
+.omikuji-box::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2a2a2a;
+}
+
+.omikuji-box.shaking {
+  animation: omikuji-shake 0.12s infinite;
+}
+
+@keyframes omikuji-shake {
+  0% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+
+.omikuji-prompt {
+  font-size: 13px;
+  color: #cfd3da;
+  margin-top: 8px;
+}
+
+.omikuji-result {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #454c5c;
+  animation: omikuji-reveal 0.4s ease;
+  cursor: pointer;
+}
+
+.omikuji-result.hidden {
+  display: none;
+}
+
+@keyframes omikuji-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.omikuji-result-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffe066;
+}
+
+.omikuji-result-comment {
+  font-size: 13px;
+  color: #eaeaea;
+  margin-top: 6px;
+}
+
+/* 宝箱の刻印パズル */
+.treasure-lock-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 18px;
+}
+
+.treasure-lock-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.treasure-lock-symbol {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: #2c313d;
+  border: 2px solid #454c5c;
+  color: #eaeaea;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.treasure-lock-symbol:hover:not(:disabled) {
+  border-color: #ffe066;
+  background: #3a4152;
+}
+
+.treasure-lock-symbol .treasure-lock-emoji {
+  font-size: 26px;
+}
+
+.treasure-lock-symbol .treasure-lock-num {
+  font-size: 10px;
+  color: #9aa0ac;
+}
+
+.treasure-lock-symbol.selected {
+  border-color: #7fd1e8;
+  background: rgba(127, 209, 232, 0.15);
+}
+
+.treasure-lock-symbol:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.treasure-lock-feedback {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #cfd3da;
+  min-height: 1.4em;
+}
+
 /* 実績トースト */
 #achievement-toasts {
   display: flex;
