@@ -41,6 +41,17 @@ export const MISSIONS = [
     getObjective: () => '夜の公園で、星を眺める人ともっと話そう',
   },
   {
+    id: 'treasureMarks',
+    title: '宝箱の刻印：3つの立て札を探そう',
+    isActive: (s) => s.hasFlag('visited_forest') && !s.hasFlag('foundTreasureChest'),
+    getObjective: (s) => {
+      const found = ['foundMarkStar', 'foundMarkMoon', 'foundMarkSun'].filter((f) => s.hasFlag(f)).length;
+      return found >= 3
+        ? '森の宝箱の前で、刻印を正しい順番で押してみよう'
+        : `森のどこかにある「刻印の立て札」を探そう（${found}/3）`;
+    },
+  },
+  {
     id: 'townLegend',
     title: '町の言い伝え：真実を探ろう',
     isActive: (s) => (s.hasFlag('foundTreasureChest') || s.hasFlag('drewDaikichi')) && !s.hasFlag('legendRevealed'),
