@@ -58,6 +58,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 28, y: 19 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 26, y: 19 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 7, y: 8 }); // 隠しアイテム: しおり
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 8, y: 12 }); // 生垣の外の目印
 
   placeNpc(tiles, npcs, { id: 'library_librarian_01', type: NpcType.LIBRARIAN, x: 23, y: 19, name: '司書', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'library_reader_01', type: NpcType.VILLAGER, x: 31, y: 13, name: '利用者', facing: 'left' });
