@@ -147,6 +147,12 @@ export class DialogueUI {
     this._startLine();
   }
 
+  /** 会話を終了させず、ウィンドウだけを一時的に隠す（ミニゲームへの割り込み用） */
+  hide() {
+    this._clearTypeTimer();
+    this.root.classList.add('hidden');
+  }
+
   close() {
     this._clearTypeTimer();
     this.root.classList.add('hidden');
