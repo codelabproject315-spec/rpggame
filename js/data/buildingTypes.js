@@ -12,6 +12,7 @@ export const BuildingType = {
   LIBRARY: 'library',
   SHRINE: 'shrine',
   PARK_GATE: 'parkGate',
+  STOREHOUSE: 'storehouse',
 };
 
 export const BUILDING_DEFINITIONS = {
@@ -50,5 +51,11 @@ export const BUILDING_DEFINITIONS = {
     bodyColor: '#c9a876',
     roofColor: '#5c7a4a',
     interiorMapId: null,
+  },
+  [BuildingType.STOREHOUSE]: {
+    name: '古い蔵',
+    bodyColor: '#7a6a52',
+    roofColor: '#3f3529',
+    interiorMapId: 'maze', // 中に入ると迷路マップへ
   },
 };
