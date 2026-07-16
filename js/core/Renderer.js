@@ -351,6 +351,20 @@ function buildObjectMesh(obj) {
       group.add(twig);
       break;
     }
+    case 'fishingSpot': {
+      const mat = new THREE.MeshLambertMaterial({ color });
+      const plank = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.9, ts * 0.06, ts * 0.35), mat);
+      plank.position.y = ts * 0.1;
+      group.add(plank);
+      const postMat = new THREE.MeshLambertMaterial({ color: '#5a4530' });
+      const postGeo = new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, ts * 0.5, 6);
+      for (const [px, pz] of [[-0.35, -0.12], [0.35, -0.12], [-0.35, 0.12], [0.35, 0.12]]) {
+        const post = new THREE.Mesh(postGeo, postMat);
+        post.position.set(px * ts, -ts * 0.1, pz * ts);
+        group.add(post);
+      }
+      break;
+    }
     default: {
       const box = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.4, ts * 0.4), new THREE.MeshLambertMaterial({ color }));
       box.position.y = ts * 0.2;
