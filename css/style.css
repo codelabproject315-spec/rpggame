@@ -396,7 +396,9 @@ h1 {
 }
 
 .omikuji-panel,
-.treasure-lock-panel {
+.treasure-lock-panel,
+.fishing-panel,
+.janken-panel {
   background: rgba(20, 22, 28, 0.97);
   border: 2px solid #ffe066;
   border-radius: 14px;
@@ -534,6 +536,125 @@ h1 {
   font-size: 12px;
   color: #cfd3da;
   min-height: 1.4em;
+}
+
+/* 釣りミニゲーム */
+.fishing-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 18px;
+}
+
+.fishing-track {
+  position: relative;
+  width: 320px;
+  max-width: 70vw;
+  height: 20px;
+  background: #2c313d;
+  border: 2px solid #454c5c;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.fishing-zone {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background: rgba(127, 209, 232, 0.5);
+  border-radius: 6px;
+}
+
+.fishing-marker {
+  position: absolute;
+  top: -5px;
+  width: 6px;
+  height: 30px;
+  background: #ffe066;
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+
+.fishing-result {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #454c5c;
+  cursor: pointer;
+}
+
+.fishing-result.hidden {
+  display: none;
+}
+
+.fishing-result-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffe066;
+}
+
+.fishing-result-comment {
+  font-size: 13px;
+  color: #eaeaea;
+  margin-top: 6px;
+}
+
+/* じゃんけんミニゲーム */
+.janken-prompt {
+  font-size: 13px;
+  color: #cfd3da;
+  margin-bottom: 18px;
+}
+
+.janken-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.janken-hand {
+  width: 76px;
+  height: 76px;
+  border-radius: 10px;
+  background: #2c313d;
+  border: 2px solid #454c5c;
+  color: #eaeaea;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.janken-hand:hover {
+  border-color: #ffe066;
+  background: #3a4152;
+}
+
+.janken-hand .janken-emoji {
+  font-size: 30px;
+}
+
+.janken-hand .janken-label {
+  font-size: 11px;
+  color: #9aa0ac;
+}
+
+.janken-result {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #454c5c;
+  cursor: pointer;
+}
+
+.janken-result.hidden {
+  display: none;
+}
+
+.janken-result-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffe066;
 }
 
 /* 実績トースト */
