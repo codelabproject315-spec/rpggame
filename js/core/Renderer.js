@@ -328,15 +328,16 @@ function buildObjectMesh(obj) {
       break;
     }
     case 'sparkle': {
-      const mat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.9 });
-      const core = new THREE.Mesh(new THREE.OctahedronGeometry(ts * 0.3, 0), mat);
-      core.position.y = ts * 0.55;
-      core.rotation.y = Math.PI / 6;
-      group.add(core);
-      const spike = new THREE.Mesh(new THREE.OctahedronGeometry(ts * 0.16, 0), mat);
-      spike.position.y = ts * 0.55;
-      spike.rotation.set(Math.PI / 4, Math.PI / 4, 0);
-      group.add(spike);
+      // 光のビーコン: 地面から伸びる半透明の光の柱＋浮かぶ宝玉。RPGの「ここに何かある」目印
+      const beamMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.35, depthWrite: false });
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.16, ts * 0.22, ts * 1.7, 10, 1, true), beamMat);
+      beam.position.y = ts * 0.85;
+      group.add(beam);
+
+      const orbMat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.0 });
+      const orb = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.16, 10, 10), orbMat);
+      orb.position.y = ts * 0.55;
+      group.add(orb);
       break;
     }
     case 'thicket': {
@@ -367,7 +368,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
   const group = new THREE.Group();
 
   const body = new THREE.Mesh(
-    new THREE.CapsuleGeometry(ts * 0.27, height * 0.5, 4, 8),
+    new THREE.CapsuleGeometry(ts * 0.33, height * 0.5, 4, 8),
     new THREE.MeshLambertMaterial({ color: bodyColor })
   );
   body.position.y = height * 0.42;
@@ -375,7 +376,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
 
   if (accentColor) {
     const accent = new THREE.Mesh(
-      new THREE.TorusGeometry(ts * 0.21, ts * 0.05, 6, 12),
+      new THREE.TorusGeometry(ts * 0.25, ts * 0.06, 6, 12),
       new THREE.MeshLambertMaterial({ color: accentColor })
     );
     accent.rotation.x = Math.PI / 2;
@@ -384,7 +385,7 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
   }
 
   const head = new THREE.Mesh(
-    new THREE.SphereGeometry(ts * 0.25, 10, 10),
+    new THREE.SphereGeometry(ts * 0.3, 10, 10),
     new THREE.MeshLambertMaterial({ color: skinColor })
   );
   head.position.y = height * 0.82;
