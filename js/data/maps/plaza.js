@@ -63,6 +63,8 @@ function build() {
   placeNpc(tiles, npcs, { id: 'plaza_npc_02', type: NpcType.CUSTOMER, x: 26, y: 13, name: '買い物帰りの住人', facing: 'left' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_03', type: NpcType.VILLAGER, x: 23, y: 19, name: '散歩中の住人', facing: 'up' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_04', type: NpcType.VILLAGER, x: 16, y: 6, name: '庭でくつろぐ住人', facing: 'down' });
+  // じゃんけん好きな生徒（ミニゲーム: じゃんけん対決）
+  placeNpc(tiles, npcs, { id: 'plaza_janken_01', type: NpcType.STUDENT, x: 14, y: 6, name: 'じゃんけん好きな生徒', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_05', type: NpcType.STUDENT, x: 39, y: 6, name: '庭でくつろぐ生徒', facing: 'down' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_06', type: NpcType.CUSTOMER, x: 7, y: 24, name: '庭でくつろぐ住人', facing: 'up' });
   placeNpc(tiles, npcs, { id: 'plaza_npc_07', type: NpcType.VILLAGER, x: 37, y: 24, name: '庭でくつろぐ住人', facing: 'up' });
