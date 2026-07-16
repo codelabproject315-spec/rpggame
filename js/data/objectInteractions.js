@@ -257,6 +257,38 @@ export const OBJECT_INTERACTIONS = {
       return { speaker: '茂み', lines: ['のこぎりで切り開けそうな茂みだ。', 'この奥に、何か落ちているかもしれない。'] };
     },
   },
+
+  // ---- 蔵の迷路のお宝部屋 ----
+  'maze:18,1': {
+    getResult(state) {
+      if (state.hasItem('item_maze_treasure')) {
+        return { speaker: '宝箱', lines: ['空になった宝箱だ。よく踏破したものだ。'] };
+      }
+      state.collectItem('item_maze_treasure');
+      state.setFlag('clearedMaze');
+      return {
+        speaker: '宝箱',
+        lines: ['迷路の最深部で、埃をかぶった宝箱を見つけた!', '中には、古びたお宝が入っていた。'],
+      };
+    },
+  },
+
+  // ---- 釣りスポット（Game.js側でミニゲームを開始する） ----
+  'forest:19,15': {
+    getResult() {
+      return { speaker: '釣り場', lines: ['川べりで、糸を垂らしてみよう。'], minigame: 'fishing' };
+    },
+  },
+  'shrine:12,25': {
+    getResult() {
+      return { speaker: '釣り場', lines: ['神社の池で、糸を垂らしてみよう。'], minigame: 'fishing' };
+    },
+  },
+  'park:37,8': {
+    getResult() {
+      return { speaker: '釣り場', lines: ['公園の池で、糸を垂らしてみよう。'], minigame: 'fishing' };
+    },
+  },
 };
 
 /** placeObjectで配置されたオブジェクトから、上のマップのキーを組み立てる */
