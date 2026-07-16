@@ -16,6 +16,7 @@ export const ObjectType = {
   FLOWER_BED: 'flowerBed',
   SPARKLE: 'sparkle',
   THICKET: 'thicket',
+  FISHING_SPOT: 'fishingSpot',
 };
 
 export const OBJECT_DEFINITIONS = {
@@ -79,6 +80,13 @@ export const OBJECT_DEFINITIONS = {
     name: '茂み',
     color: '#2f6b3a',
     shape: 'thicket',
+    walkable: false,
+    onInteract: null,
+  },
+  [ObjectType.FISHING_SPOT]: {
+    name: '釣り場',
+    color: '#8a6a3a',
+    shape: 'fishingSpot',
     walkable: false,
     onInteract: null,
   },
