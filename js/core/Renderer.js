@@ -9,7 +9,7 @@ import * as THREE from '../vendor/three.module.min.js';
 import { TileType, TILE_DEFINITIONS } from '../data/tileTypes.js';
 import { BUILDING_DEFINITIONS } from '../data/buildingTypes.js';
 import { OBJECT_DEFINITIONS } from '../data/objectTypes.js';
-import { NPC_DEFINITIONS } from '../data/npcTypes.js';
+import { NPC_DEFINITIONS, NpcType } from '../data/npcTypes.js';
 import { MAPS } from '../data/maps/index.js';
 import { TILE_SIZE, HEIGHTS, Direction } from '../constants.js';
 
@@ -363,7 +363,7 @@ function buildObjectMesh(obj) {
 }
 
 /** プレイヤー・NPC共通の簡易キャラクターメッシュを作る */
-function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
+function buildCharacterMesh({ bodyColor, skinColor, accentColor, height, accessory = 'none' }) {
   const ts = TILE_SIZE;
   const group = new THREE.Group();
 
@@ -391,7 +391,153 @@ function buildCharacterMesh({ bodyColor, skinColor, accentColor, height }) {
   head.position.y = height * 0.82;
   group.add(head);
 
+  _addAccessory(group, accessory, { ts, height, bodyColor, accentColor });
+
   return { group, headHeight: height * 0.82 };
+}
+
+/** NPCの職業や役割が一目でわかるよう、頭・体に小物パーツを追加する */
+function _addAccessory(group, accessory, { ts, height, bodyColor, accentColor }) {
+  const headY = height * 0.82;
+  const chestY = height * 0.55;
+
+  switch (accessory) {
+    case 'glasses': {
+      const mat = new THREE.MeshLambertMaterial({ color: '#2a2a2a' });
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.42, ts * 0.06, ts * 0.05), mat);
+      frame.position.set(0, headY + ts * 0.02, ts * 0.27);
+      group.add(frame);
+      break;
+    }
+    case 'glassesTie': {
+      const glassMat = new THREE.MeshLambertMaterial({ color: '#2a2a2a' });
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.42, ts * 0.06, ts * 0.05), glassMat);
+      frame.position.set(0, headY + ts * 0.02, ts * 0.27);
+      group.add(frame);
+
+      const tieMat = new THREE.MeshLambertMaterial({ color: '#8a2e2e' });
+      const tie = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.07, ts * 0.32, 4), tieMat);
+      tie.rotation.x = Math.PI;
+      tie.position.set(0, chestY, ts * 0.28);
+      group.add(tie);
+      break;
+    }
+    case 'backpack': {
+      const mat = new THREE.MeshLambertMaterial({ color: '#a0442e' });
+      const pack = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.34, ts * 0.4, ts * 0.2), mat);
+      pack.position.set(0, chestY, -ts * 0.26);
+      group.add(pack);
+      break;
+    }
+    case 'apron': {
+      const mat = new THREE.MeshLambertMaterial({ color: '#f2e9d8' });
+      const apron = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.4, ts * 0.44, ts * 0.05), mat);
+      apron.position.set(0, height * 0.32, ts * 0.24);
+      group.add(apron);
+      break;
+    }
+    case 'shoppingBag': {
+      const mat = new THREE.MeshLambertMaterial({ color: '#e6c35c' });
+      const bag = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.22, ts * 0.26, ts * 0.16), mat);
+      bag.position.set(ts * 0.33, height * 0.32, ts * 0.08);
+      group.add(bag);
+      const handleMat = new THREE.MeshLambertMaterial({ color: '#8a6a3a' });
+      const handle = new THREE.Mesh(new THREE.TorusGeometry(ts * 0.1, ts * 0.02, 6, 10, Math.PI), handleMat);
+      handle.position.set(ts * 0.33, height * 0.44, ts * 0.08);
+      group.add(handle);
+      break;
+    }
+    case 'hood': {
+      const mat = new THREE.MeshLambertMaterial({ color: bodyColor });
+      const hood = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.36, 10, 10, 0, Math.PI * 2, 0, Math.PI * 0.65), mat);
+      hood.position.set(0, headY + ts * 0.08, -ts * 0.02);
+      group.add(hood);
+      break;
+    }
+    case 'cane': {
+      const mat = new THREE.MeshLambertMaterial({ color: '#5a4530' });
+      const cane = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.025, ts * 0.025, height * 0.5, 6), mat);
+      cane.position.set(ts * 0.34, height * 0.25, ts * 0.1);
+      cane.rotation.z = 0.12;
+      group.add(cane);
+      const handle = new THREE.Mesh(new THREE.TorusGeometry(ts * 0.06, ts * 0.02, 6, 10), mat);
+      handle.position.set(ts * 0.36, height * 0.5, ts * 0.1);
+      group.add(handle);
+      break;
+    }
+    case 'book': {
+      const mat = new THREE.MeshLambertMaterial({ color: accentColor || '#8a3e3e' });
+      const book = new THREE.Mesh(new THREE.BoxGeometry(ts * 0.26, ts * 0.34, ts * 0.06), mat);
+      book.position.set(ts * 0.24, chestY, ts * 0.22);
+      book.rotation.z = 0.2;
+      group.add(book);
+      break;
+    }
+    case 'axe': {
+      const handleMat = new THREE.MeshLambertMaterial({ color: '#6b4a2a' });
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, height * 0.6, 6), handleMat);
+      handle.position.set(0, height * 0.55, -ts * 0.22);
+      handle.rotation.x = 0.35;
+      group.add(handle);
+      const bladeMat = new THREE.MeshLambertMaterial({ color: '#9aa0aa' });
+      const blade = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.14, ts * 0.22, 4), bladeMat);
+      blade.rotation.z = Math.PI / 2;
+      blade.position.set(0, height * 0.82, -ts * 0.3);
+      group.add(blade);
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+/** 神社の三毛猫専用: 人型ではなく四足の小さな猫モデルを組み立てる */
+function buildCatMesh({ patchColors = ['#d97a3a', '#2a2a2a'] } = {}) {
+  const ts = TILE_SIZE;
+  const group = new THREE.Group();
+  const furMat = new THREE.MeshLambertMaterial({ color: '#f5efe0' });
+
+  const body = new THREE.Mesh(new THREE.CapsuleGeometry(ts * 0.16, ts * 0.32, 4, 8), furMat);
+  body.rotation.z = Math.PI / 2;
+  body.position.y = ts * 0.2;
+  group.add(body);
+
+  const head = new THREE.Mesh(new THREE.SphereGeometry(ts * 0.15, 10, 10), furMat);
+  head.position.set(ts * 0.26, ts * 0.26, 0);
+  group.add(head);
+
+  const earMat = furMat;
+  for (const side of [-1, 1]) {
+    const ear = new THREE.Mesh(new THREE.ConeGeometry(ts * 0.05, ts * 0.08, 4), earMat);
+    ear.position.set(ts * 0.3, ts * 0.36, side * ts * 0.07);
+    group.add(ear);
+  }
+
+  const tail = new THREE.Mesh(new THREE.CylinderGeometry(ts * 0.03, ts * 0.05, ts * 0.34, 6), furMat);
+  tail.position.set(-ts * 0.22, ts * 0.28, 0);
+  tail.rotation.z = -0.9;
+  group.add(tail);
+
+  // 三毛猫らしい模様（オレンジ・黒のまだら）
+  const patchGeo = new THREE.SphereGeometry(ts * 0.09, 6, 6);
+  const patch1 = new THREE.Mesh(patchGeo, new THREE.MeshLambertMaterial({ color: patchColors[0] }));
+  patch1.position.set(ts * 0.05, ts * 0.28, ts * 0.1);
+  patch1.scale.set(1, 0.7, 0.6);
+  group.add(patch1);
+  const patch2 = new THREE.Mesh(patchGeo, new THREE.MeshLambertMaterial({ color: patchColors[1] }));
+  patch2.position.set(-ts * 0.08, ts * 0.24, -ts * 0.09);
+  patch2.scale.set(0.8, 0.6, 0.6);
+  group.add(patch2);
+
+  const legMat = furMat;
+  const legGeo = new THREE.CylinderGeometry(ts * 0.03, ts * 0.03, ts * 0.16, 6);
+  for (const [lx, lz] of [[0.16, 0.09], [0.16, -0.09], [-0.16, 0.09], [-0.16, -0.09]]) {
+    const leg = new THREE.Mesh(legGeo, legMat);
+    leg.position.set(lx * ts, ts * 0.08, lz * ts);
+    group.add(leg);
+  }
+
+  return { group, headHeight: ts * 0.36 };
 }
 
 function addFacingDot(group, facing, headHeight, color = '#222222') {
@@ -555,15 +701,18 @@ export class Renderer {
 
     for (const npc of mapData.npcs) {
       const def = NPC_DEFINITIONS[npc.type];
-      const { group, headHeight } = buildCharacterMesh({
-        bodyColor: def.bodyColor,
-        skinColor: def.skinColor,
-        accentColor: def.accentColor,
-        height: HEIGHTS.NPC,
-      });
+      const { group, headHeight } = npc.type === NpcType.CAT
+        ? buildCatMesh({ patchColors: def.patchColors })
+        : buildCharacterMesh({
+          bodyColor: def.bodyColor,
+          skinColor: def.skinColor,
+          accentColor: def.accentColor,
+          accessory: def.accessory,
+          height: HEIGHTS.NPC,
+        });
       addFacingDot(group, npc.facing, headHeight);
       const label = makeLabelSprite(npc.name, 30);
-      label.position.y = HEIGHTS.NPC + TILE_SIZE * 0.4;
+      label.position.y = headHeight + TILE_SIZE * 0.4;
       group.add(label);
       group.position.set(npc.x * TILE_SIZE + TILE_SIZE / 2, 0, npc.y * TILE_SIZE + TILE_SIZE / 2);
       this.mapGroup.add(group);
