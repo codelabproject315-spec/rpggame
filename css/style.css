@@ -197,6 +197,12 @@ h1 {
   pointer-events: none;
 }
 
+/* 親の pointer-events: none を、進行中ミッションパネルだけ打ち消してクリックできるようにする
+   （実績トーストは通知のみなので、クリック無効のままでよい） */
+#mission-tracker {
+  pointer-events: auto;
+}
+
 /* 画面左上のUIをまとめるラッパー（ミッション表示） */
 #hud-top-left {
   position: fixed;
