@@ -66,6 +66,7 @@ function build() {
   placeObject(tiles, objects, { type: ObjectType.STREETLIGHT, x: 10, y: 28 });
   placeObject(tiles, objects, { type: ObjectType.BENCH, x: 17, y: 36 });
   placeObject(tiles, objects, { type: ObjectType.SPARKLE, x: 15, y: 12 }); // 隠しアイテム: 小さい頃のお守り
+  placeObject(tiles, objects, { type: ObjectType.THICKET, x: 17, y: 17 }); // 生垣の外の目印
 
   // 家族NPC
   placeNpc(tiles, npcs, {
