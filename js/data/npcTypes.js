@@ -20,6 +20,7 @@ export const NpcType = {
   ELDER: 'elder',
   RESEARCHER: 'researcher',
   MYSTERY_RAIN: 'mysteryRain',
+  WOODCUTTER: 'woodcutter',
 };
 
 const DEFAULT_SKIN = '#f2c199';
@@ -42,4 +43,6 @@ export const NPC_DEFINITIONS = {
   // 雨の日だけ現れる謎の人物: 既存の「森の人影」「星を眺める人」(MYSTERY)とは
   // 違う色味にして、見ただけで「別の正体不明キャラだ」とわかるようにする
   [NpcType.MYSTERY_RAIN]: { bodyColor: '#1f3a52', skinColor: '#5a6a75', accentColor: '#3fb0c0' },
+  // 森の木こり: のこぎりをくれる役。作業着の焦茶色で、他の森の住人と区別できるように
+  [NpcType.WOODCUTTER]: { bodyColor: '#6b4a30', skinColor: DEFAULT_SKIN, accentColor: '#c9a876' },
 };
