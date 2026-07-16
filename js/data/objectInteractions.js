@@ -15,6 +15,20 @@ function clearThicket(mapId, x, y) {
   if (map && map.tiles[y]) map.tiles[y][x] = TileType.GRASS;
 }
 
+/** 茂みを切り開いたのに合わせて、周りの生垣全体も開けてしまう（狭い隙間を探させないため） */
+function clearHedge(mapId, x, y, w, h) {
+  const map = MAPS[mapId];
+  if (!map) return;
+  for (let j = y; j < y + h; j++) {
+    if (!map.tiles[j]) continue;
+    for (let i = x; i < x + w; i++) {
+      if (map.tiles[j][i] === TileType.FOREST) {
+        map.tiles[j][i] = TileType.GRASS;
+      }
+    }
+  }
+}
+
 export const OBJECT_INTERACTIONS = {
   // 森の宝箱（js/data/maps/forest.js の配置座標と対応）
   // 3つの刻印の立て札をすべて見つけるまでは開かず、
@@ -206,7 +220,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_plaza_15_9')) {
         state.setFlag('clearedThicket_plaza_15_9');
         clearThicket('plaza', 15, 9);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('plaza', 12, 3, 8, 6);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
@@ -223,7 +238,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_shopping_8_11')) {
         state.setFlag('clearedThicket_shopping_8_11');
         clearThicket('shopping', 8, 11);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('shopping', 4, 3, 9, 8);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
@@ -240,7 +256,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_school_6_24')) {
         state.setFlag('clearedThicket_school_6_24');
         clearThicket('school', 6, 24);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('school', 4, 18, 6, 6);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
@@ -257,7 +274,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_library_8_12')) {
         state.setFlag('clearedThicket_library_8_12');
         clearThicket('library', 8, 12);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('library', 4, 4, 9, 8);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
@@ -274,7 +292,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_residential_49_24')) {
         state.setFlag('clearedThicket_residential_49_24');
         clearThicket('residential', 49, 24);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('residential', 43, 25, 15, 12);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
@@ -291,7 +310,8 @@ export const OBJECT_INTERACTIONS = {
       if (!state.hasFlag('clearedThicket_home_17_17')) {
         state.setFlag('clearedThicket_home_17_17');
         clearThicket('home', 17, 17);
-        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', 'これで奥まで進めそうだ。'] };
+        clearHedge('home', 11, 7, 13, 10);
+        return { speaker: '茂み', lines: ['のこぎりで、茂みを切り開いた!', '生垣ごと大きく道が開けた。'] };
       }
       return { speaker: '茂み', lines: ['切り開いた後の茂みだ。奥まで進める。'] };
     },
