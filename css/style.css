@@ -291,17 +291,17 @@ h1 {
 /* 左上一覧で、未着手・クリア済みの項目は少し目立たなくする */
 .mission-item-notStarted .mission-item-title,
 .mission-item-notStarted .mission-item-objective {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .mission-item-complete .mission-item-title {
   text-decoration: line-through;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .mission-item-complete .mission-item-objective,
 .mission-item-complete .mission-item-hint {
-  opacity: 0.55;
+  opacity: 0.75;
 }
 
 /* ミニゲームの共通オーバーレイ */
