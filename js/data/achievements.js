@@ -13,7 +13,7 @@ export const ACHIEVEMENTS = [
   {
     id: 'explorer',
     title: '町の案内人',
-    description: '町にある9つのエリアをすべて訪れた',
+    description: '町にある10のエリアをすべて訪れた',
     check: (state) => ALL_MAP_IDS.every((id) => state.hasFlag(`visited_${id}`)),
   },
   {
@@ -115,7 +115,7 @@ export const ACHIEVEMENTS = [
   {
     id: 'collector',
     title: 'コレクター',
-    description: '町中に散らばる12個のアイテムをすべて集めた',
-    check: (state) => state.getItemCount() >= 12,
+    description: '町中に散らばる18個のアイテムをすべて集めた',
+    check: (state) => state.getItemCount() >= 18,
   },
 ];
