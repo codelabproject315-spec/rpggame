@@ -82,4 +82,10 @@ export const ACHIEVEMENTS = [
     description: '商店街からいなくなった猫を見つけた',
     check: (state) => state.hasFlag('catFound'),
   },
+  {
+    id: 'markHunter',
+    title: '刻印の探求者',
+    description: '森に隠された3つの刻印の立て札をすべて見つけた',
+    check: (state) => state.hasFlag('foundMarkStar') && state.hasFlag('foundMarkMoon') && state.hasFlag('foundMarkSun'),
+  },
 ];
