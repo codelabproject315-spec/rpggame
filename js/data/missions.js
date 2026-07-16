@@ -164,7 +164,7 @@ export const MISSIONS = [
   {
     id: 'shrinePrayer',
     title: '神社でお参りをしよう',
-    isActive: (s) => !s.hasFlag('prayedAtShrine'),
+    isActive: (s) => s.hasFlag('visited_shrine') && !s.hasFlag('prayedAtShrine'),
     isCompleted: (s) => s.hasFlag('prayedAtShrine'),
     getObjective: () => '神社で参拝してみよう',
     getHint: () => '神社（じんじゃ）にいる「神主」に話しかけよう',
@@ -180,7 +180,10 @@ export const MISSIONS = [
   {
     id: 'explorer',
     title: '町の案内人：9つのエリアを訪れよう',
-    isActive: (s) => !ALL_MAP_IDS.every((id) => s.hasFlag(`visited_${id}`)),
+    isActive: (s) => {
+      const count = ALL_MAP_IDS.filter((id) => s.hasFlag(`visited_${id}`)).length;
+      return count >= 2 && count < ALL_MAP_IDS.length;
+    },
     isCompleted: (s) => ALL_MAP_IDS.every((id) => s.hasFlag(`visited_${id}`)),
     getObjective: (s) => {
       const count = ALL_MAP_IDS.filter((id) => s.hasFlag(`visited_${id}`)).length;
@@ -191,7 +194,7 @@ export const MISSIONS = [
   {
     id: 'socialButterfly',
     title: '町の人気者：10人以上と話そう',
-    isActive: (s) => s.getTalkedCount() < 10,
+    isActive: (s) => s.getTalkedCount() >= 1 && s.getTalkedCount() < 10,
     isCompleted: (s) => s.getTalkedCount() >= 10,
     getObjective: (s) => `いろんな人と話してみよう（${s.getTalkedCount()}/10人）`,
     getHint: () => '町中を歩いて、いろんな人に話しかけてみよう',
@@ -199,7 +202,7 @@ export const MISSIONS = [
   {
     id: 'itemCollector',
     title: 'コレクター：隠しアイテムを12個集めよう',
-    isActive: (s) => s.getItemCount() < 12,
+    isActive: (s) => s.getItemCount() >= 1 && s.getItemCount() < 12,
     isCompleted: (s) => s.getItemCount() >= 12,
     getObjective: (s) => `隠しアイテムを集めよう（${s.getItemCount()}/12個）`,
     getHint: () => '町のあちこちの茂みや花壇を探してみよう（Kキーでコレクション帳が見られるよ）',
